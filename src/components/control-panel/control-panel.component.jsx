@@ -1,11 +1,7 @@
 import React from "react";
 
 function ControlPanel() {
-  return (
-    <div>
-      <button> click me</button>
-    </div>
-  );
+  return <div className="controlPanel">Control Panel</div>;
 }
 
 export default ControlPanel;

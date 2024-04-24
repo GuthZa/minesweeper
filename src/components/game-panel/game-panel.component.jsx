@@ -3,7 +3,7 @@ import { Cell } from "../index";
 
 function GamePanel() {
   return (
-    <div>
+    <div className="gamePanel">
       <Cell />
     </div>
   );
