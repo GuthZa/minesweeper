@@ -1,0 +1,13 @@
+.cell {
+  display: flex;
+  background-color: rgb(136, 80, 83);
+  min-width: 30px;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
