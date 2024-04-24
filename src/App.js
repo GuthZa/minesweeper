@@ -1,12 +1,14 @@
-import "./App.css";
-import React from "react";
-import { GamePanel, ControlPanel } from "./components";
+import "./assets/styles/App.css";
+import { React, useState } from "react";
+import { GamePanel, ControlPanel, Header, Footer } from "./components";
 
 function App() {
   return (
-    <div className="App">
+    <div id="container">
+      <Header />
       <ControlPanel />
       <GamePanel />
+      <Footer />
     </div>
   );
 }
