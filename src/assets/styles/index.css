@@ -1,24 +1,10 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --globalColor: #808080;
 }
 
 body {
-  background: linear-gradient(#555, rgba(0, 0, 0, 0.1)) fixed;
+  background-color: #fffff0;
   font-family: Verdana, "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-}
-
-select,
-label,
-dd,
-button {
-  padding: 5px;
-  border-radius: 5px;
-  outline: none;
-}
-
-select,
-button {
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
