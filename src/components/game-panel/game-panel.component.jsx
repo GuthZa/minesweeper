@@ -4,18 +4,28 @@ import { Cell } from "../index";
 import { ALTURA_BASE, LARGURA_BASE } from "../../constants";
 
 function GamePanel() {
-  const [isMined, setIsMined] = useState(false);
-  const [isFlagged, setIsFlagged] = useState("");
+  const [isMined, setMined] = useState(false);
+  const [isFlagged, setFlagged] = useState(false);
+  const [isHidden, setHidden] = useState(true);
+
+  const handleSetHidden = (e) =>
+    e.target.className.includes("hidden") ? setHidden(false) : " ";
+  const handleSetFlagged = (e) => (isHidden ? setHidden(false) : " ");
+  const handleSetMined = (e) => (isHidden ? setHidden(false) : " ");
 
   const handleOnClick = (e) => {
     //Stops the browser from opening the default window
     e.preventDefault();
     if (e.type === "click") {
-      console.log("Left click");
+      handleSetHidden(e);
     } else if (e.type === "contextmenu") {
       console.log("Right click");
     }
   };
+
+  function checkMina() {
+    return false;
+  }
 
   const grid = [];
   let k = 0;
@@ -32,6 +42,7 @@ function GamePanel() {
         {grid.map((cell) => (
           <Cell
             key={cell}
+            isHidden={isHidden}
             isMined={isMined}
             isFlagged={isFlagged}
             onClick={handleOnClick}

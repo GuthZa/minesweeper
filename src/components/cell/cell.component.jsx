@@ -2,15 +2,16 @@ import "./cell.css";
 import React from "react";
 
 function Cell(props) {
-  const { isFlagged, isMined, onClick } = props;
+  const { isFlagged, isMined, isHidden, onClick } = props;
 
-  let mina = isMined ? "mina" : "";
-  let bandeira = isFlagged ? "bandeira" : "";
+  const className =
+    "cell" +
+    (isMined ? " mina" : "") +
+    (isFlagged ? " bandeira" : "") +
+    (isHidden ? " hidden" : "");
+
   return (
-    <div
-      className={`cell ${mina} ${bandeira}`}
-      onClick={onClick}
-      onContextMenu={onClick}></div>
+    <div className={className} onClick={onClick} onContextMenu={onClick}></div>
   );
 }
 

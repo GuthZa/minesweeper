@@ -8,5 +8,12 @@
   /* to show the number on the cell */
   color: #fff;
   font-weight: 600;
+}
 
+.cell.hidden {
+  background-color: rgb(91, 66, 69);
+}
+
+.cell.hidden:hover {
+  background-color: rgb(111, 76, 79);
 }
