@@ -8,28 +8,33 @@ function GamePanel() {
   const [isMined, setIsMined] = useState(false);
   const [isFlagged, setIsFlagged] = useState("");
 
-  const handleOnClick = () => {
-    console.log("clicked");
+  const handleOnClick = (e) => {
+    console.log(e.button);
   };
 
-  return (
-    <div className="gamePanel">
-      <Cell isMined={isMined} isFlagged={isFlagged} onClick={handleOnClick} />
-      <Cell isMined={isMined} isFlagged={isFlagged} onClick={handleOnClick} />
-      <Cell isMined={isMined} isFlagged={isFlagged} onClick={handleOnClick} />
-      <Cell isMined={isMined} isFlagged={isFlagged} onClick={handleOnClick} />
-      <Cell isMined={isMined} isFlagged={isFlagged} onClick={handleOnClick} />
-    </div>
-  );
-}
-
-function addCells(altura = ALTURA_BASE, largura = LARGURA_BASE) {
-  let grid = [];
-  for (let i = 0; i < altura; i++) {
-    for (let j = 0; j < largura; j++) {
-      grid.push(<Cell isFlagged="" />);
+  const grid = [];
+  let k = 0;
+  for (let i = 0; i < ALTURA_BASE; i++) {
+    for (let j = 0; j < LARGURA_BASE; j++) {
+      grid.push(k++);
     }
   }
+
+  return (
+    <div className="board">
+      <div className="mine-count">Mines: </div>
+      <div className="gamePanel">
+        {grid.map((cell) => (
+          <Cell
+            key={cell}
+            isMined={isMined}
+            isFlagged={isFlagged}
+            onClick={handleOnClick}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 //Creates an array on mines where:  saved as x,y,x,y...

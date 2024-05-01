@@ -1,7 +1,15 @@
 .cell {
-  flex: 0 0 2em;
-  height: 2em;
-  background-color: blue;
+  min-width: 30px;
+  min-height: 30px;
+  background-color: rgb(136, 80, 83);
   margin: 2px;
   border-radius: 4px;
+
+  /* to show the number on the cell */
+  color: #fff;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

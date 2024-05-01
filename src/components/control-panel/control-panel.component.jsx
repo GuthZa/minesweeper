@@ -9,9 +9,9 @@ function ControlPanel(props) {
       <h3>Escolha do Nível</h3>
       <form className="form">
         <fieldset className="form-group">
-          <label forHtml="btLevel">Nível:</label>
+          <label>Nível:</label>
           <select id="btLevel">
-            <option selected value="0">
+            <option defaultValue="0" value="0">
               Seleccione...
             </option>
             <option value="1">Básico (9x9) - 10 minas</option>
