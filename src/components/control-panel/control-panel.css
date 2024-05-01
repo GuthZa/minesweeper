@@ -1,12 +1,42 @@
 #panel-control {
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
-  margin: 15px 0px;
   border: 3px solid black;
+
+  margin: 15px 0px;
+  padding: 0px 20px 15px;
+  align-self: center;
 }
 
 #panel-control .form {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
+  gap: 205px;
+}
+
+.form-group {
+  padding: 8px;
+}
+
+#btLevel {
+  min-height: 25px;
+  justify-self: end;
+  cursor: pointer;
+}
+
+#btPlay {
+  min-width: 105px;
+}
+
+/* Remove a arrow de default do select */
+#panel-control select {
+  /* For firefox */
+  -webkit-appearance: none;
+  /* For Chrome */
+  -moz-appearance: none;
+  /* Gives a bit of space before the text and the select box */
+  text-indent: 1px;
+}
+/* For IE10 */
+#panel-control select::-ms-expand {
+  display: none;
 }
