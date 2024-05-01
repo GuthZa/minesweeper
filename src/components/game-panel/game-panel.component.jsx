@@ -1,8 +1,7 @@
+import "./game-panel.css";
 import React, { useState } from "react";
 import { Cell } from "../index";
 import { ALTURA_BASE, LARGURA_BASE } from "../../constants";
-
-import "./game-panel.css";
 
 function GamePanel() {
   const [isMined, setIsMined] = useState(false);
@@ -22,7 +21,7 @@ function GamePanel() {
 
   return (
     <div className="board">
-      <div className="mine-count">Mines: </div>
+      <div className="mines-count">Mines: </div>
       <div className="gamePanel">
         {grid.map((cell) => (
           <Cell

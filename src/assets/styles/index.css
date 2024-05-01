@@ -5,6 +5,8 @@
 body {
   background-color: #fffff0;
   font-family: Verdana, "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+
+  margin: 0px;
   display: flex;
   flex-direction: column;
 }

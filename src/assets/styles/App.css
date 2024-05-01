@@ -1,5 +1,15 @@
 footer {
+  border: 2px solid coral;
+
+  margin-top: auto;
   font-size: small;
+
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+
+  color: var(--globalColor);
 }
 
 header {

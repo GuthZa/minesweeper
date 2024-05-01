@@ -1,5 +1,5 @@
-import React from "react";
 import "./control-panel.css";
+import React from "react";
 
 function ControlPanel(props) {
   const { gameStarted, onGameStart } = props;

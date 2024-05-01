@@ -4,13 +4,15 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: 100vh;
 }
 
 .gamePanel {
   margin: 20px 0px;
+
+  max-width: 275px;
+
   display: flex;
-  flex-flow: column wrap;
+  flex-wrap: wrap;
   align-self: center;
 }
 

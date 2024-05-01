@@ -1,6 +1,5 @@
-import React from "react";
-
 import "./cell.css";
+import React from "react";
 
 function Cell(props) {
   const { isFlagged, isMined, onClick } = props;
