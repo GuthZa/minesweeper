@@ -1,7 +1,6 @@
 import "./game-panel.css";
 import React, { useState } from "react";
 import { Cell } from "../index";
-import { ALTURA_BASE, LARGURA_BASE } from "../../constants";
 
 function GamePanel(props) {
   const { selectedLevel } = props;
@@ -9,6 +8,8 @@ function GamePanel(props) {
   const [isMined, setMined] = useState(false);
   const [isFlagged, setFlagged] = useState(false);
   const [isHidden, setHidden] = useState(true);
+
+  let mineCount = selectedLevel === "3" ? 99 : selectedLevel === "2" ? 40 : 10;
 
   const handleSetHidden = (e) =>
     e.target.className.includes("hidden") ? setHidden(false) : " ";
@@ -49,7 +50,7 @@ function GamePanel(props) {
 
   return (
     <div className="board">
-      <div className="mines-count">Mines: </div>
+      <div className="mines-count">Mines: {mineCount} </div>
       <div
         className={`gamePanel ${
           selectedLevel === "2"

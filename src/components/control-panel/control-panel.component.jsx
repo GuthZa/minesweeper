@@ -12,7 +12,7 @@ function ControlPanel(props) {
           <label>Nível: </label>
           <select
             id="btLevel"
-            disabled={!gameStarted}
+            disabled={gameStarted}
             onChange={onSelectedLevel}>
             <option defaultValue="0" value="0">
               Escolha o nível ...
