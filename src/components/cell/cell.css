@@ -1,0 +1,7 @@
+.cell {
+  flex: 0 0 2em;
+  height: 2em;
+  background-color: blue;
+  margin: 2px;
+  border-radius: 4px;
+}

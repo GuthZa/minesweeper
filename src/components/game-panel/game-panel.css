@@ -1,4 +1,13 @@
 .gamePanel {
-  flex: 1;
+  border: 2px solid coral;
   min-height: 100vh;
+
+  flex: 1;
+
+  display: flex;
+  flex-flow: row wrap;
+  /* align-content: flex-start; */
+  /* align-items: center; */
+  justify-content: center;
+  align-items: center;
 }
