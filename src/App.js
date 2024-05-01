@@ -18,7 +18,7 @@ function App() {
         selectedLevel={selectedLevel}
         onSelectedLevel={handleLevelChange}
       />
-      <GamePanel selectedLevel={selectedLevel} />
+      <GamePanel selectedLevel={selectedLevel} gameStarted={gameStarted} />
       <Footer />
     </div>
   );

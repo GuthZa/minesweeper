@@ -2,33 +2,33 @@ import "./game-panel.css";
 import React, { useState } from "react";
 import { Cell } from "../index";
 
+let mineCount;
+
 function GamePanel(props) {
-  const { selectedLevel } = props;
+  const { selectedLevel, gameStarted } = props;
 
   const [isMined, setMined] = useState(false);
   const [isFlagged, setFlagged] = useState(false);
   const [isHidden, setHidden] = useState(true);
-
-  let mineCount = selectedLevel === "3" ? 99 : selectedLevel === "2" ? 40 : 10;
 
   const handleSetHidden = (e) =>
     e.target.className.includes("hidden") ? setHidden(false) : " ";
   const handleSetFlagged = (e) => setFlagged(true);
   const handleSetMined = (e) => console.log("to implement");
 
+  if (!gameStarted)
+    mineCount = selectedLevel === "3" ? 99 : selectedLevel === "2" ? 40 : 10;
+
   const handleOnClick = (e) => {
     //Stops the browser from opening the default window
     e.preventDefault();
+    mineCount--;
     if (e.type === "click") {
       handleSetHidden(e);
     } else if (e.type === "contextmenu") {
       handleSetFlagged();
     }
   };
-
-  function checkMinas() {
-    return false;
-  }
 
   const grid = [];
   let k = 0;
@@ -48,19 +48,17 @@ function GamePanel(props) {
     }
   }
 
+  let className =
+    selectedLevel === "2"
+      ? "intermedio"
+      : selectedLevel === "3"
+      ? "avancado"
+      : "iniciante";
+
   return (
     <div className="board">
-      <div className="mines-count">Mines: {mineCount} </div>
-      <div
-        className={`gamePanel ${
-          selectedLevel === "2"
-            ? "intermedio"
-            : selectedLevel === "3"
-            ? "avancado"
-            : "iniciante"
-        }`}>
-        {grid}
-      </div>
+      <div className="mines-count">Mines: {mineCount}</div>
+      <div className={`gamePanel ${className}`}>{grid}</div>
     </div>
   );
 }
