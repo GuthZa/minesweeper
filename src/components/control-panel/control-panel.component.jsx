@@ -2,7 +2,7 @@ import "./control-panel.css";
 import React from "react";
 
 function ControlPanel(props) {
-  const { gameStarted, onGameStart } = props;
+  const { gameStarted, onGameStart, selectedLevel, onSelectedLevel } = props;
 
   return (
     <section id="panel-control">
@@ -10,7 +10,10 @@ function ControlPanel(props) {
       <form className="form">
         <fieldset className="form-group">
           <label>Nível: </label>
-          <select id="btLevel">
+          <select
+            id="btLevel"
+            disabled={!gameStarted}
+            onChange={onSelectedLevel}>
             <option defaultValue="0" value="0">
               Escolha o nível ...
             </option>
@@ -19,7 +22,11 @@ function ControlPanel(props) {
             <option value="3">Avançado (30x16) - 99 minas</option>
           </select>
         </fieldset>
-        <button type="button" id="btPlay" onClick={onGameStart}>
+        <button
+          type="button"
+          id="btPlay"
+          disabled={selectedLevel === "0"}
+          onClick={onGameStart}>
           {gameStarted ? "Terminar Jogo" : "Iniciar Jogo"}
         </button>
       </form>

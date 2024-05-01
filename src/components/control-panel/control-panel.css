@@ -29,12 +29,13 @@
 
 /* Remove a arrow de default do select */
 #panel-control select {
+  min-width: 190px;
   /* For firefox */
   -webkit-appearance: none;
   /* For Chrome */
   -moz-appearance: none;
   /* Gives a bit of space before the text and the select box */
-  text-indent: 1px;
+  text-indent: 3px;
 }
 /* For IE10 */
 #panel-control select::-ms-expand {

@@ -3,15 +3,17 @@ import React, { useState } from "react";
 import { Cell } from "../index";
 import { ALTURA_BASE, LARGURA_BASE } from "../../constants";
 
-function GamePanel() {
+function GamePanel(props) {
+  const { selectedLevel } = props;
+
   const [isMined, setMined] = useState(false);
   const [isFlagged, setFlagged] = useState(false);
   const [isHidden, setHidden] = useState(true);
 
   const handleSetHidden = (e) =>
     e.target.className.includes("hidden") ? setHidden(false) : " ";
-  const handleSetFlagged = (e) => (isHidden ? setHidden(false) : " ");
-  const handleSetMined = (e) => (isHidden ? setHidden(false) : " ");
+  const handleSetFlagged = (e) => setFlagged(true);
+  const handleSetMined = (e) => console.log("to implement");
 
   const handleOnClick = (e) => {
     //Stops the browser from opening the default window
@@ -19,39 +21,50 @@ function GamePanel() {
     if (e.type === "click") {
       handleSetHidden(e);
     } else if (e.type === "contextmenu") {
-      console.log("Right click");
+      handleSetFlagged();
     }
   };
 
-  function checkMina() {
+  function checkMinas() {
     return false;
   }
 
   const grid = [];
   let k = 0;
-  for (let i = 0; i < ALTURA_BASE; i++) {
-    for (let j = 0; j < LARGURA_BASE; j++) {
-      grid.push(k++);
+  let altura = selectedLevel === "3" ? 30 : selectedLevel === "2" ? 16 : 9;
+  let largura = selectedLevel === "3" || selectedLevel === "2" ? 16 : 9;
+  for (let i = 0; i < altura; i++) {
+    for (let j = 0; j < largura; j++) {
+      grid.push(
+        <Cell
+          key={k++}
+          isHidden={isHidden}
+          isMined={isMined}
+          isFlagged={isFlagged}
+          onClick={handleOnClick}
+        />
+      );
     }
   }
 
   return (
     <div className="board">
       <div className="mines-count">Mines: </div>
-      <div className="gamePanel">
-        {grid.map((cell) => (
-          <Cell
-            key={cell}
-            isHidden={isHidden}
-            isMined={isMined}
-            isFlagged={isFlagged}
-            onClick={handleOnClick}
-          />
-        ))}
+      <div
+        className={`gamePanel ${
+          selectedLevel === "2"
+            ? "intermedio"
+            : selectedLevel === "3"
+            ? "avancado"
+            : "iniciante"
+        }`}>
+        {grid}
       </div>
     </div>
   );
 }
+
+//TODO Change functions bellow to create mines, or remove them
 
 //Creates an array on mines where:  saved as x,y,x,y...
 //Odd numbers - x

@@ -4,14 +4,19 @@ import React from "react";
 function Cell(props) {
   const { isFlagged, isMined, isHidden, onClick } = props;
 
-  const className =
-    "cell" +
-    (isMined ? " mina" : "") +
-    (isFlagged ? " bandeira" : "") +
-    (isHidden ? " hidden" : "");
+  // const className =
+  //   "cell" +
+  //   (isMined ? " mina" : "") +
+  //   (isFlagged ? " bandeira" : "") +
+  //   (isHidden ? " hidden" : "");
 
   return (
-    <div className={className} onClick={onClick} onContextMenu={onClick}></div>
+    <div
+      className={`cell ${isHidden ? "hidden" : ""}`}
+      onClick={onClick}
+      onContextMenu={onClick}>
+      {isFlagged ? "🚩" : ""}
+    </div>
   );
 }
 

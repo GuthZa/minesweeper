@@ -7,11 +7,20 @@
 .gamePanel {
   margin: 20px 0px;
 
-  max-width: 275px;
-
   display: flex;
   flex-wrap: wrap;
   align-self: center;
+}
+.gamePanel.iniciante {
+  width: 306px;
+}
+
+.gamePanel.intermedio {
+  width: 544px;
+}
+
+.gamePanel.avancado {
+  width: 1020px;
 }
 
 .mines-count {
