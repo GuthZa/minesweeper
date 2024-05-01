@@ -6,7 +6,12 @@ function Cell(props) {
 
   let mina = isMined ? "mina" : "";
   let bandeira = isFlagged ? "bandeira" : "";
-  return <div className={`cell ${mina} ${bandeira}`} onClick={onClick}></div>;
+  return (
+    <div
+      className={`cell ${mina} ${bandeira}`}
+      onClick={onClick}
+      onContextMenu={onClick}></div>
+  );
 }
 
 export default Cell;

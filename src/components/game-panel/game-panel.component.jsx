@@ -8,7 +8,13 @@ function GamePanel() {
   const [isFlagged, setIsFlagged] = useState("");
 
   const handleOnClick = (e) => {
-    console.log(e.button);
+    //Stops the browser from opening the default window
+    e.preventDefault();
+    if (e.type === "click") {
+      console.log("Left click");
+    } else if (e.type === "contextmenu") {
+      console.log("Right click");
+    }
   };
 
   const grid = [];
