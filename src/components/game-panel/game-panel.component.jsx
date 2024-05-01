@@ -34,21 +34,19 @@ function GamePanel(props) {
   let k = 0;
   let altura = selectedLevel === "3" ? 30 : selectedLevel === "2" ? 16 : 9;
   let largura = selectedLevel === "3" || selectedLevel === "2" ? 16 : 9;
-  for (let i = 0; i < altura; i++) {
-    for (let j = 0; j < largura; j++) {
-      grid.push(
-        <Cell
-          key={k++}
-          isHidden={isHidden}
-          isMined={isMined}
-          isFlagged={isFlagged}
-          onClick={handleOnClick}
-        />
-      );
-    }
+  for (let i = 0; i < altura * largura; i++) {
+    grid.push(
+      <Cell
+        key={k++}
+        isHidden={isHidden}
+        isMined={isMined}
+        isFlagged={isFlagged}
+        onClick={handleOnClick}
+      />
+    );
   }
 
-  let className =
+  let nivel =
     selectedLevel === "2"
       ? "intermedio"
       : selectedLevel === "3"
@@ -58,7 +56,7 @@ function GamePanel(props) {
   return (
     <div className="board">
       <div className="mines-count">Mines: {mineCount}</div>
-      <div className={`gamePanel ${className}`}>{grid}</div>
+      <div className={`gamePanel ${nivel}`}>{grid}</div>
     </div>
   );
 }
