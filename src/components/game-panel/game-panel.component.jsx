@@ -1,5 +1,5 @@
 import "./game-panel.css";
-import React, { useState } from "react";
+import React from "react";
 import { Cell } from "../index";
 
 let mineCount;
@@ -7,43 +7,15 @@ let mineCount;
 function GamePanel(props) {
   const { selectedLevel, gameStarted } = props;
 
-  const [isMined, setMined] = useState(false);
-  const [isFlagged, setFlagged] = useState(false);
-  const [isHidden, setHidden] = useState(true);
-
-  const handleSetHidden = (e) =>
-    e.target.className.includes("hidden") ? setHidden(false) : " ";
-  const handleSetFlagged = (e) => setFlagged(true);
-  const handleSetMined = (e) => console.log("to implement");
-
   if (!gameStarted)
     mineCount = selectedLevel === "3" ? 99 : selectedLevel === "2" ? 40 : 10;
-
-  const handleOnClick = (e) => {
-    //Stops the browser from opening the default window
-    e.preventDefault();
-    mineCount--;
-    if (e.type === "click") {
-      handleSetHidden(e);
-    } else if (e.type === "contextmenu") {
-      handleSetFlagged();
-    }
-  };
 
   const grid = [];
   let k = 0;
   let altura = selectedLevel === "3" ? 30 : selectedLevel === "2" ? 16 : 9;
   let largura = selectedLevel === "3" || selectedLevel === "2" ? 16 : 9;
   for (let i = 0; i < altura * largura; i++) {
-    grid.push(
-      <Cell
-        key={k++}
-        isHidden={isHidden}
-        isMined={isMined}
-        isFlagged={isFlagged}
-        onClick={handleOnClick}
-      />
-    );
+    grid.push(<Cell key={k++} />);
   }
 
   let nivel =
