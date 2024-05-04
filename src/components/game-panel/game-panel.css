@@ -23,7 +23,16 @@
   width: 1020px;
 }
 
-.mines-count {
+.info {
+  align-self: center;
+  text-align: center;
+
+  display: flex;
+  gap: 30px;
+}
+
+.mines-count,
+.timer {
   padding: 5px 10px;
   margin-top: 20px;
   font-weight: 400;

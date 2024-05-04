@@ -37,6 +37,4 @@ function Cell(props) {
   );
 }
 
-function handleRightClick() {}
-
 export default Cell;
