@@ -6,7 +6,10 @@ function Cell(props) {
   const [isFlagged, setFlagged] = useState("");
   const [isRevealed, setRevealed] = useState(false);
 
-  const handlesetRevealed = () => (!isRevealed ? setRevealed(true) : "");
+  //! The cards still have the class "revealed" or "flagged" upon new creation
+
+  const handleSetRevealed = () => (!isRevealed ? setRevealed(true) : "");
+
   const handleSetFlagged = () => {
     let flag =
       isFlagged === "" ? "flagged" : isFlagged === "flagged" ? "possible" : "";
@@ -19,7 +22,7 @@ function Cell(props) {
     e.preventDefault();
     // mineCount--;
     if (e.type === "click") {
-      handlesetRevealed();
+      handleSetRevealed();
     } else if (e.type === "contextmenu") {
       handleSetFlagged();
     }
