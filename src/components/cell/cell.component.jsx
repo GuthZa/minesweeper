@@ -22,7 +22,9 @@ function Cell(props) {
     e.preventDefault();
     // mineCount--;
     if (e.type === "click") {
-      handleSetRevealed();
+      if (isFlagged !== "flagged" && isFlagged !== "possible")
+        if(isMined) 
+        handleSetRevealed();
     } else if (e.type === "contextmenu") {
       handleSetFlagged();
     }
@@ -32,7 +34,7 @@ function Cell(props) {
 
   return (
     <div
-      className={`cell ${hiddenClass}`}
+      className={`cell unselectable ${hiddenClass}`}
       onClick={handleOnClick}
       onContextMenu={handleOnClick}>
       {isFlagged === "flagged" ? "🚩" : isFlagged === "possible" ? "?" : ""}

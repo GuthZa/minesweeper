@@ -11,7 +11,11 @@ function App() {
     setGameStarted(!gameStarted);
     handleGrid(selectedLevel);
   };
-  
+
+  const gameOver = () => {
+    setGameStarted(false);
+  };
+
   const handleLevelChange = (ele) => {
     let value = ele.currentTarget.value;
     setSelectedLevel(value);

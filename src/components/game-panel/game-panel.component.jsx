@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { Timer } from "../index";
 
 let mineCount;
+let time = 0;
 
 function GamePanel(props) {
   const { selectedLevel, gameStarted, grid } = props;
 
   const handleTimer = (t) => {
-    console.log(t);
+    time = t;
   };
 
   if (!gameStarted)
@@ -29,6 +30,7 @@ function GamePanel(props) {
         <div className="timer">
           Time:
           {gameStarted && <Timer onTimer={handleTimer} />}
+          {!gameStarted && time}
         </div>
       </div>
       <div className={`gamePanel ${nivel}`}>{grid}</div>
