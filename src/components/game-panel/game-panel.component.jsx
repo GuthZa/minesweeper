@@ -18,13 +18,8 @@ function GamePanel(props) {
     time = t;
   };
 
-  const checkNeighbors = (x, y) => {
-    let count = 0;
-    grid.forEach((ele) => {
-      if (isAdjacentAndMined(x, y, ele)) count++;
-    });
-    return count;
-  };
+  const checkNeighbors = (x, y) =>
+    grid.filter((ele) => isAdjacentAndMined(x, y, ele)).length;
 
   let nivel =
     selectedLevel === "2"
@@ -45,19 +40,18 @@ function GamePanel(props) {
         </div>
       </div>
       <div className={`gamePanel ${nivel}`}>
-        {gameStarted && selectedLevel !== "0"
-          ? grid.map((cell) => (
-              <Cell
-                key={cell.id}
-                isMined={cell.isMined}
-                x={cell.x}
-                y={cell.y}
-                checkNeighbors={checkNeighbors}
-                onGameOver={onGameOver}
-                onMineCount={onMineCount}
-              />
-            ))
-          : " "}
+        {gameStarted &&
+          grid.map((cell) => (
+            <Cell
+              key={cell.id}
+              isMined={cell.isMined}
+              x={cell.x}
+              y={cell.y}
+              checkNeighbors={checkNeighbors}
+              onGameOver={onGameOver}
+              onMineCount={onMineCount}
+            />
+          ))}
       </div>
     </div>
   );

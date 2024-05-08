@@ -1,6 +1,6 @@
 import "./assets/styles/App.css";
 import { React, useState } from "react";
-import { GamePanel, ControlPanel, Header, Footer, Cell } from "./components";
+import { GamePanel, ControlPanel, Header, Footer } from "./components";
 import {
   NUM_MINAS_AVANCADO,
   NUM_MINAS_BEGINNER,
@@ -77,7 +77,6 @@ function App() {
       />
       <GamePanel
         selectedLevel={selectedLevel}
-        gameStarted={gameStarted}
         grid={grid}
         onGameOver={handleGameOver}
         mineCount={mineCount}
