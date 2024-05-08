@@ -5,8 +5,7 @@ function Cell(props) {
   const [isMined, setMined] = useState(false);
   const [isFlagged, setFlagged] = useState("");
   const [isRevealed, setRevealed] = useState(false);
-
-  //! The cards still have the class "revealed" or "flagged" upon new creation
+  //! The cards still have the class "revealed" or "flaggd" upon new creation
 
   const handleSetRevealed = () => (!isRevealed ? setRevealed(true) : "");
 
@@ -23,8 +22,7 @@ function Cell(props) {
     // mineCount--;
     if (e.type === "click") {
       if (isFlagged !== "flagged" && isFlagged !== "possible")
-        if(isMined) 
-        handleSetRevealed();
+        if (!isMined) handleSetRevealed();
     } else if (e.type === "contextmenu") {
       handleSetFlagged();
     }
