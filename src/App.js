@@ -38,22 +38,21 @@ function App() {
       case "+":
         setMineCount(mineCount + value);
         break;
-      case "=":
-        setMineCount(value);
-        break;
       default:
         setMineCount(value);
     }
   };
 
   const handleGrid = (level) => {
-    let altura = level === "3" ? 30 : level === "2" ? 16 : 9;
-    let largura = level === "3" || level === "2" ? 16 : 9;
+    let height = level === "3" ? 30 : level === "2" ? 16 : 9;
+    let width = level === "3" || level === "2" ? 16 : 9;
     const newGrid = [];
 
-    for (let i = 0, k = 0; i < altura; i++)
-      for (let j = 0; j < largura; j++, k++)
-        newGrid.push({ id: k, isMined: true, x: i, y: j });
+    let mineChance = (height * width) / mineCount;
+
+    for (let i = 0, k = 0; i < height; i++)
+      for (let j = 0; j < width; j++, k++)
+        newGrid.push({ id: k, isMined: true, x: j, y: i });
 
     setGrid(newGrid);
   };
@@ -77,6 +76,7 @@ function App() {
       />
       <GamePanel
         selectedLevel={selectedLevel}
+        gameStarted={gameStarted}
         grid={grid}
         onGameOver={handleGameOver}
         mineCount={mineCount}
@@ -85,6 +85,17 @@ function App() {
       <Footer />
     </div>
   );
+}
+
+function setMines(width, height, numMines) {
+  let arrayMines = [];
+  while (numMines >= 0) {
+    let newMine = [
+      Math.floor(Math.random() * width),
+      Math.floor(Math.random() * height),
+    ];
+    
+  }
 }
 
 export default App;

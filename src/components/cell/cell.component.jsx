@@ -4,12 +4,12 @@ import React, { useState } from "react";
 function Cell(props) {
   const { isMined, x, y, checkNeighbors, onGameOver, onMineCount } = props;
   const [isFlagged, setFlagged] = useState("");
-  const [mineCount, setMineCount] = useState(0);
   const [isRevealed, setRevealed] = useState(false);
+  const [numMines, setNumMines] = useState(0);
 
-  const handleSetRevealed = () => (!isRevealed ? setRevealed(true) : "");
+  const handleRevealed = () => (!isRevealed ? setRevealed(true) : "");
 
-  const handleMineCount = (value) => setMineCount(value);
+  const handleNumMines = (value) => setNumMines(value);
 
   const handleSetFlagged = () => {
     if (isFlagged === "") {
@@ -26,26 +26,27 @@ function Cell(props) {
   const handleOnClick = (e) => {
     //Stops the browser from opening the default window
     e.preventDefault();
+    console.log(x + " " + y);
     if (e.type === "click" && isFlagged === "") {
       if (isMined && !isRevealed) {
         onMineCount("-");
         //! remover quando minas estiver com numero correto
         // onGameOver();
       }
-      handleSetRevealed();
-      handleMineCount(checkNeighbors(x, y));
+      handleRevealed();
+      handleNumMines(checkNeighbors(x, y));
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlagged();
     }
   };
 
-  const setCellText =
+  const cellText =
     isFlagged === "flagged"
       ? "🚩"
       : isFlagged === "possible"
       ? "?"
-      : mineCount !== 0
-      ? mineCount
+      : numMines !== 0
+      ? numMines
       : "";
 
   const hiddenClass = isRevealed ? "" : "hidden";
@@ -55,7 +56,7 @@ function Cell(props) {
       className={`cell unselectable ${hiddenClass}`}
       onClick={handleOnClick}
       onContextMenu={handleOnClick}>
-      {setCellText}
+      {cellText}
     </div>
   );
 }
