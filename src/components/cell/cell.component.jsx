@@ -3,7 +3,7 @@ import "./cell.css";
 import React, { useState } from "react";
 
 function Cell(props) {
-  const { gameStarted, isMined } = props;
+  const { gameStarted, isMined, checkNeighbors, x, y } = props;
   const [isFlagged, setFlagged] = useState("");
   const [isRevealed, setRevealed] = useState(false);
   //! The cards still have the class "revealed" or "flagged" upon new creation
@@ -22,8 +22,8 @@ function Cell(props) {
     e.preventDefault();
     // mineCount--;
     if (e.type === "click" && isFlagged === "") {
+      checkNeighbors(x, y);
       handleSetRevealed();
-      if (isMined) console.log("mina");
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlagged();
     }

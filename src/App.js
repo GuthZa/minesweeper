@@ -25,13 +25,14 @@ function App() {
   //  const [isMined, setMined] = useState(false);
 
   const handleGrid = (level) => {
-    let k = 0;
     let altura = level === "3" ? 30 : level === "2" ? 16 : 9;
     let largura = level === "3" || level === "2" ? 16 : 9;
     const newGrid = [];
-    for (let i = 0; i < altura * largura; i++, k++) {
-      newGrid.push({ id: k, isMined: true });
-    }
+
+    for (let i = 0, k = 0; i < altura; i++)
+      for (let j = 0; j < largura; j++, k++)
+        newGrid.push({ id: k, isMined: true, x: i, y: j });
+
     setGrid(newGrid);
   };
 
