@@ -2,11 +2,17 @@ import "./game-panel.css";
 import React from "react";
 import { Timer, Cell } from "../index";
 
-let mineCount;
 let time = 0;
 
 function GamePanel(props) {
-  const { selectedLevel, gameStarted, onGameOver, grid } = props;
+  const {
+    selectedLevel,
+    gameStarted,
+    onGameOver,
+    grid,
+    mineCount,
+    onMineCount,
+  } = props;
 
   const handleTimer = (t) => {
     time = t;
@@ -17,11 +23,8 @@ function GamePanel(props) {
     grid.forEach((ele) => {
       if (isAdjacentAndMined(x, y, ele)) count++;
     });
-    return count === 0;
+    return count;
   };
-
-  if (!gameStarted)
-    mineCount = selectedLevel === "3" ? 99 : selectedLevel === "2" ? 40 : 10;
 
   let nivel =
     selectedLevel === "2"
@@ -51,6 +54,7 @@ function GamePanel(props) {
                 y={cell.y}
                 checkNeighbors={checkNeighbors}
                 onGameOver={onGameOver}
+                onMineCount={onMineCount}
               />
             ))
           : " "}

@@ -3,27 +3,44 @@ import "./cell.css";
 import React, { useState } from "react";
 
 function Cell(props) {
-  const { gameStarted, isMined, x, y, checkNeighbors, onGameOver } = props;
+  const {
+    gameStarted,
+    isMined,
+    x,
+    y,
+    checkNeighbors,
+    onGameOver,
+    onMineCount,
+  } = props;
   const [isFlagged, setFlagged] = useState("");
+  const [mineCount, setMineCount] = useState(0);
   const [isRevealed, setRevealed] = useState(false);
   //! The cards still have the class "revealed" or "flagged" upon new creation
 
   const handleSetRevealed = () => (!isRevealed ? setRevealed(true) : "");
 
+  const handleMineCount = (value) => setMineCount(value);
+
   const handleSetFlagged = () => {
-    let flag =
-      isFlagged === "" ? "flagged" : isFlagged === "flagged" ? "possible" : "";
-    setFlagged(flag);
+    if (isFlagged === "") {
+      setFlagged("flagged");
+      onMineCount("-");
+    } else if (isFlagged === "flagged") {
+      setFlagged("possible");
+    } else {
+      setFlagged("");
+      onMineCount("+");
+    }
   };
-  const handleSetMined = (e) => console.log("to implement");
 
   const handleOnClick = (e) => {
     //Stops the browser from opening the default window
     e.preventDefault();
-    // mineCount--;
     if (e.type === "click" && isFlagged === "") {
-      if (checkNeighbors(x, y) === 0) handleSetRevealed();
-      else onGameOver();
+      //! remover quando minas estiver com numero correto if (isMined) onGameOver();
+      if (isMined) onMineCount("-");
+      handleSetRevealed();
+      handleMineCount(checkNeighbors(x, y));
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlagged();
     }
@@ -36,7 +53,13 @@ function Cell(props) {
       className={`cell unselectable ${hiddenClass}`}
       onClick={handleOnClick}
       onContextMenu={handleOnClick}>
-      {isFlagged === "flagged" ? "🚩" : isFlagged === "possible" ? "?" : ""}
+      {isFlagged === "flagged"
+        ? "🚩"
+        : isFlagged === "possible"
+        ? "?"
+        : mineCount !== 0
+        ? mineCount
+        : ""}
     </div>
   );
 }
