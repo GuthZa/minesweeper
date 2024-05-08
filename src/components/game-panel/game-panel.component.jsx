@@ -6,7 +6,7 @@ let mineCount;
 let time = 0;
 
 function GamePanel(props) {
-  const { selectedLevel, gameStarted, grid } = props;
+  const { selectedLevel, gameStarted, onGameOver, grid } = props;
 
   const handleTimer = (t) => {
     time = t;
@@ -15,22 +15,9 @@ function GamePanel(props) {
   const checkNeighbors = (x, y) => {
     let count = 0;
     grid.forEach((ele) => {
-      //TODO change into a better function
-      if (
-        (x - 1 === ele.x && y - 1 === ele.y && ele.isMined) ||
-        (x === ele.x && y - 1 === ele.y && ele.isMined) ||
-        (x + 1 === ele.x && y - 1 === ele.y && ele.isMined) ||
-        (x - 1 === ele.x && y === ele.y && ele.isMined) ||
-        (x + 1 === ele.x && y === ele.y && ele.isMined) ||
-        (x - 1 === ele.x && y + 1 === ele.y && ele.isMined) ||
-        (x === ele.x && y + 1 === ele.y && ele.isMined) ||
-        (x + 1 === ele.x && y + 1 === ele.y && ele.isMined)
-      ) {
-        count++;
-        console.log("mina");
-      }
+      if (isAdjacentAndMined(x, y, ele)) count++;
     });
-    return count;
+    return count === 0;
   };
 
   if (!gameStarted)
@@ -60,14 +47,24 @@ function GamePanel(props) {
               <Cell
                 key={cell.id}
                 isMined={cell.isMined}
-                checkNeighbors={checkNeighbors}
                 x={cell.x}
                 y={cell.y}
+                checkNeighbors={checkNeighbors}
+                onGameOver={onGameOver}
               />
             ))
           : " "}
       </div>
     </div>
+  );
+}
+
+function isAdjacentAndMined(x, y, ele) {
+  return (
+    Math.abs(x - ele.x) <= 1 &&
+    Math.abs(y - ele.y) <= 1 &&
+    !(x === ele.x && y === ele.y) &&
+    ele.isMined
   );
 }
 

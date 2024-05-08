@@ -12,7 +12,7 @@ function App() {
     handleGrid(selectedLevel);
   };
 
-  const gameOver = () => {
+  const handleGameOver = () => {
     setGameStarted(false);
   };
 
@@ -49,6 +49,7 @@ function App() {
         selectedLevel={selectedLevel}
         gameStarted={gameStarted}
         grid={grid}
+        onGameOver={handleGameOver}
       />
       <Footer />
     </div>
