@@ -1,6 +1,6 @@
 import "./game-panel.css";
 import React, { useState } from "react";
-import { Timer } from "../index";
+import { Timer, Cell } from "../index";
 
 let mineCount;
 let time = 0;
@@ -22,7 +22,7 @@ function GamePanel(props) {
       ? "avancado"
       : "iniciante";
 
-  // use useEffect to update mineCount ?
+  //? use useEffect to update mineCount
   return (
     <div className="board">
       <div className="info">
@@ -33,7 +33,11 @@ function GamePanel(props) {
           {!gameStarted && time}
         </div>
       </div>
-      <div className={`gamePanel ${nivel}`}>{grid}</div>
+      <div className={`gamePanel ${nivel}`}>
+        {selectedLevel !== "0"
+          ? grid.map((cell) => <Cell key={cell.id} isMined={cell.isMined} />)
+          : " "}
+      </div>
     </div>
   );
 }

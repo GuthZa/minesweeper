@@ -1,11 +1,12 @@
+import { logDOM } from "@testing-library/react";
 import "./cell.css";
 import React, { useState } from "react";
 
 function Cell(props) {
-  const [isMined, setMined] = useState(false);
+  const { gameStarted, isMined } = props;
   const [isFlagged, setFlagged] = useState("");
   const [isRevealed, setRevealed] = useState(false);
-  //! The cards still have the class "revealed" or "flaggd" upon new creation
+  //! The cards still have the class "revealed" or "flagged" upon new creation
 
   const handleSetRevealed = () => (!isRevealed ? setRevealed(true) : "");
 
@@ -20,10 +21,10 @@ function Cell(props) {
     //Stops the browser from opening the default window
     e.preventDefault();
     // mineCount--;
-    if (e.type === "click") {
-      if (isFlagged !== "flagged" && isFlagged !== "possible")
-        if (!isMined) handleSetRevealed();
-    } else if (e.type === "contextmenu") {
+    if (e.type === "click" && isFlagged === "") {
+      handleSetRevealed();
+      if (isMined) console.log("mina");
+    } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlagged();
     }
   };
