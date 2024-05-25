@@ -1,5 +1,5 @@
 import "./game-panel.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { Timer, Cell } from "../index";
 
 let time = 0;
@@ -18,7 +18,7 @@ function GamePanel(props) {
     time = t;
   };
 
-  const checkNeighbors = (x, y) =>
+  const checkNeighborsHaveMines = (x, y) =>
     grid.filter((ele) => isAdjacentAndMined(x, y, ele)).length;
 
   let nivel =
@@ -28,7 +28,10 @@ function GamePanel(props) {
       ? "avancado"
       : "iniciante";
 
-  //? use useEffect to update mineCount
+  useEffect(() => {
+    // if (mineCount === 0) onGameOver();
+  }, [grid, gameStarted, onGameOver]);
+
   return (
     <div className="board">
       <div className="info">
@@ -40,18 +43,18 @@ function GamePanel(props) {
         </div>
       </div>
       <div className={`gamePanel ${nivel}`}>
-        {gameStarted &&
-          grid.map((cell) => (
-            <Cell
-              key={cell.id}
-              isMined={cell.isMined}
-              x={cell.x}
-              y={cell.y}
-              checkNeighbors={checkNeighbors}
-              onGameOver={onGameOver}
-              onMineCount={onMineCount}
-            />
-          ))}
+        {grid.map((cell) => (
+          <Cell
+            key={cell.id}
+            isMined={cell.isMined}
+            x={cell.x}
+            y={cell.y}
+            checkNeighborsHaveMines={checkNeighborsHaveMines}
+            onGameOver={onGameOver}
+            onMineCount={onMineCount}
+            gameStarted={gameStarted}
+          />
+        ))}
       </div>
     </div>
   );

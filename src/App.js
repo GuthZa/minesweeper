@@ -16,7 +16,7 @@ function App() {
   const handleGameStart = () => {
     setGameStarted(!gameStarted);
     handleGrid(selectedLevel);
-    handleMineCount("=", setNumMinas(selectedLevel));
+    setNumMinas(selectedLevel);
   };
 
   const handleGameOver = () => {
@@ -27,19 +27,14 @@ function App() {
     let value = ele.currentTarget.value;
     setSelectedLevel(value);
     handleGrid(value);
-    handleMineCount("=", setNumMinas(value));
+    setNumMinas(value);
   };
 
-  const handleMineCount = (ope, value = 1) => {
-    switch (ope) {
-      case "-":
-        setMineCount(mineCount - value);
-        break;
-      case "+":
-        setMineCount(mineCount + value);
-        break;
-      default:
-        setMineCount(value);
+  const handleMineCount = (isToRemoveMine) => {
+    if (isToRemoveMine && mineCount > 0) {
+      setMineCount((previousValue) => previousValue - 1);
+    } else {
+      setMineCount((previousValue) => previousValue + 1);
     }
   };
 
@@ -49,10 +44,19 @@ function App() {
     const newGrid = [];
 
     let mineChance = (height * width) / mineCount;
+    const arrayMines = [];
+    //chance inicial de minas 50%
+    //reduzindo smp q gera uma mina
+    setMines(width, height, mineCount, arrayMines);
 
-    for (let i = 0, k = 0; i < height; i++)
-      for (let j = 0; j < width; j++, k++)
-        newGrid.push({ id: k, isMined: true, x: j, y: i });
+    for (let i = 0; i < height; i++)
+      for (let j = 0; j < width; j++)
+        newGrid.push({
+          id: j + "-" + i,
+          isMined: arrayMines.includes([i, j]),
+          x: j,
+          y: i,
+        });
 
     setGrid(newGrid);
   };
@@ -94,7 +98,7 @@ function setMines(width, height, numMines) {
       Math.floor(Math.random() * width),
       Math.floor(Math.random() * height),
     ];
-    
+    numMines--;
   }
 }
 
