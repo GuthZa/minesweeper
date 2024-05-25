@@ -1,11 +1,12 @@
 import "./cell.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+let cellText = "";
 
 function Cell(props) {
   const {
     isMined,
-    x,
-    y,
+    grid,
     checkNeighborsHaveMines,
     onGameOver,
     onMineCount,
@@ -18,6 +19,12 @@ function Cell(props) {
   const handleSetCellRevealed = () => (!isRevealed ? setRevealed(true) : "");
 
   const handleSetNumberOfMines = (value) => setNumMines(value);
+
+  //Clears the board to a new state
+  useEffect(() => {
+    setFlag("");
+    setRevealed(false);
+  }, [grid]);
 
   // const handleGameStarted = () => {
   //   if (gameStarted) {
@@ -42,30 +49,27 @@ function Cell(props) {
   const handleOnClick = (e) => {
     //Stops the browser from opening the default window
     e.preventDefault();
-    console.log(x + " " + y);
 
     if (!gameStarted) return;
 
     if (e.type === "click" && isFlag === "") {
-      if (isMined && !isRevealed) {
-        //! remover quando minas estiver com numero correto
-        // onGameOver();
-      }
       handleSetCellRevealed();
-      handleSetNumberOfMines(checkNeighborsHaveMines(x, y));
+      if (isMined && !isRevealed) {
+        console.log("isMine");
+        onGameOver();
+      }
+      // handleSetNumberOfMines(checkNeighborsHaveMines(x, y));
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlag();
     }
   };
 
-  const cellText =
-    isFlag === "flagged"
-      ? "🚩"
-      : isFlag === "possible"
-      ? "?"
-      : numMines !== 0
-      ? numMines
-      : "";
+  let cellText = "";
+
+  if (isFlag === "flagged") cellText = "🚩";
+  if (isFlag === "possible") cellText = "?";
+  if (numMines !== 0) cellText = numMines;
+  if (isMined && isRevealed) cellText = "💣";
 
   const hiddenClass = isRevealed ? "" : "hidden";
 

@@ -11,15 +11,16 @@
   flex-wrap: wrap;
   align-self: center;
 }
-.gamePanel.iniciante {
+
+.iniciante {
   width: 306px;
 }
 
-.gamePanel.intermedio {
+.intermedio {
   width: 544px;
 }
 
-.gamePanel.avancado {
+.avancado {
   width: 1020px;
 }
 

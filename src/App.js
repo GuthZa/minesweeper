@@ -1,4 +1,5 @@
 import "./assets/styles/App.css";
+import shuffleArray from "./helpers/shuffle";
 import { React, useState } from "react";
 import { GamePanel, ControlPanel, Header, Footer } from "./components";
 import {
@@ -6,6 +7,8 @@ import {
   NUM_MINAS_BEGINNER,
   NUM_MINAS_INTERMEDIO,
 } from "./constants";
+
+let height, width;
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
@@ -16,7 +19,7 @@ function App() {
   const handleGameStart = () => {
     setGameStarted(!gameStarted);
     handleGrid(selectedLevel);
-    setNumMinas(selectedLevel);
+    setMineCount(setNumMinas(selectedLevel));
   };
 
   const handleGameOver = () => {
@@ -27,7 +30,7 @@ function App() {
     let value = ele.currentTarget.value;
     setSelectedLevel(value);
     handleGrid(value);
-    setNumMinas(value);
+    setMineCount(setNumMinas(selectedLevel));
   };
 
   const handleMineCount = (isToRemoveMine) => {
@@ -39,26 +42,19 @@ function App() {
   };
 
   const handleGrid = (level) => {
-    let height = level === "3" ? 30 : level === "2" ? 16 : 9;
-    let width = level === "3" || level === "2" ? 16 : 9;
+    height = level === "3" ? 30 : level === "2" ? 16 : 9;
+    width = level === "3" || level === "2" ? 16 : 9;
     const newGrid = [];
+    let maxMinas = setNumMinas(level);
 
-    let mineChance = (height * width) / mineCount;
-    const arrayMines = [];
-    //chance inicial de minas 50%
-    //reduzindo smp q gera uma mina
-    setMines(width, height, mineCount, arrayMines);
+    let isMine;
+    for (let i = 0, currentMinas = 0; i < height * width; i++, currentMinas++) {
+      isMine = currentMinas <= maxMinas ? true : false;
+      newGrid.push(new BoardCell(isMine, false));
+    }
+    let shuffledArray = shuffleArray(newGrid);
 
-    for (let i = 0; i < height; i++)
-      for (let j = 0; j < width; j++)
-        newGrid.push({
-          id: j + "-" + i,
-          isMined: arrayMines.includes([i, j]),
-          x: j,
-          y: i,
-        });
-
-    setGrid(newGrid);
+    setGrid(shuffledArray);
   };
 
   const setNumMinas = () => {
@@ -91,14 +87,10 @@ function App() {
   );
 }
 
-function setMines(width, height, numMines) {
-  let arrayMines = [];
-  while (numMines >= 0) {
-    let newMine = [
-      Math.floor(Math.random() * width),
-      Math.floor(Math.random() * height),
-    ];
-    numMines--;
+class BoardCell {
+  constructor(mined, flagged) {
+    this.isMined = mined;
+    this.isFlagged = flagged;
   }
 }
 
