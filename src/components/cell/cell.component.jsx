@@ -45,10 +45,7 @@ function Cell(props) {
     if (e.type === "click" && isFlag === "") {
       handleSetCellRevealed();
       handleSetNumberOfMines(checkNeighborsHaveMines());
-      if (isMined && !isRevealed) {
-        console.log("isMine");
-        onGameOver();
-      }
+      if (isMined && !isRevealed) onGameOver();
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlag();
     }

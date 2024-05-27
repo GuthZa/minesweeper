@@ -19,7 +19,7 @@ function Timer({ onTimer }) {
   //executa o useEffect
 
   useEffect(() => {
-    onTimer(seconds);
+    onTimer(seconds, idInterval);
   }, [seconds, onTimer, idInterval]);
 
   return <>{seconds}</>;

@@ -5,10 +5,10 @@ import shuffleArray from "../../helpers/shuffle";
 import boardSize from "../../helpers/boardsize";
 import numMinesOnLevel from "../../helpers/mines";
 
-let time = 0;
+let nivel = "";
 
 function GamePanel(props) {
-  const { selectedLevel, gameStarted, onGameOver } = props;
+  const { selectedLevel, gameStarted, onGameOver, onTimer } = props;
 
   const [mineCount, setMineCount] = useState(0);
   const [grid, setGrid] = useState([]);
@@ -25,13 +25,15 @@ function GamePanel(props) {
   };
 
   useEffect(() => {
-    if (gameStarted) handleGrid(selectedLevel);
+    handleGrid(selectedLevel);
     setMineCount(numMinesOnLevel(selectedLevel));
+    nivel =
+      selectedLevel === "2"
+        ? "intermedio"
+        : selectedLevel === "3"
+        ? "avancado"
+        : "iniciante";
   }, [selectedLevel, gameStarted]);
-
-  const handleTimer = (t) => {
-    time = t;
-  };
 
   const handleMineCount = (isToRemoveMine) =>
     setMineCount((previousValue) =>
@@ -56,21 +58,14 @@ function GamePanel(props) {
     return value;
   };
 
-  let nivel =
-    selectedLevel === "2"
-      ? "intermedio"
-      : selectedLevel === "3"
-      ? "avancado"
-      : "iniciante";
-
   return (
     <div className="board" onContextMenu={(e) => e.preventDefault()}>
       <div className="info">
         <div className="mines-count">Mines: {mineCount}</div>
         <div className="timer">
           Time:
-          {gameStarted && <Timer onTimer={handleTimer} />}
-          {!gameStarted && time}
+          {gameStarted && <Timer onTimer={onTimer} />}
+          {!gameStarted && 0 /* Only to make the game "prettier*/}
         </div>
       </div>
       <div className={`gamePanel ${nivel}`}>
