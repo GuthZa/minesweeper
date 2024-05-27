@@ -1,6 +1,10 @@
 import "./assets/styles/App.css";
 import { React, useState } from "react";
 import { GamePanel, ControlPanel, Header, Footer } from "./components";
+import shuffleArray from "../../helpers/mines";
+import boardSize from "../../helpers/boardsize";
+import numMinesOnLevel from "../../helpers/shuffle";
+
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);

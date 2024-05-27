@@ -1,9 +1,6 @@
 import "./game-panel.css";
 import React, { useEffect } from "react";
 import { Timer, Cell } from "../index";
-import shuffleArray from "../../helpers/mines";
-import boardSize from "../../helpers/boardsize";
-import numMinesOnLevel from "../../helpers/shuffle";
 
 let time = 0;
 
