@@ -1,21 +1,42 @@
 import "./game-panel.css";
 import { Timer, Cell } from "../index";
+import { useEffect, useState } from "react";
+import shuffleArray from "../../helpers/shuffle";
+import boardSize from "../../helpers/boardsize";
+import numMinesOnLevel from "../../helpers/mines";
 
 let time = 0;
 
 function GamePanel(props) {
-  const {
-    selectedLevel,
-    gameStarted,
-    onGameOver,
-    grid,
-    mineCount,
-    onMineCount,
-  } = props;
+  const { selectedLevel, gameStarted, onGameOver } = props;
+
+  const [mineCount, setMineCount] = useState(0);
+  const [grid, setGrid] = useState([]);
+
+  const handleGrid = (level) => {
+    const newGrid = [];
+    let maxMinas = numMinesOnLevel(level);
+    let [width, height] = boardSize(level);
+
+    for (let i = 0, currentMinas = 0; i < height * width; i++, currentMinas++)
+      newGrid.push(new BoardCell(currentMinas <= maxMinas));
+
+    setGrid(shuffleArray(newGrid));
+  };
+
+  useEffect(() => {
+    if (gameStarted) handleGrid(selectedLevel);
+    setMineCount(numMinesOnLevel(selectedLevel));
+  }, [selectedLevel, gameStarted]);
 
   const handleTimer = (t) => {
     time = t;
   };
+
+  const handleMineCount = (isToRemoveMine) =>
+    setMineCount((previousValue) =>
+      isToRemoveMine ? previousValue - 1 : previousValue + 1
+    );
 
   const checkNeighborsHaveMines = (cell) => {
     // console.log("to implent");
@@ -42,10 +63,6 @@ function GamePanel(props) {
       ? "avancado"
       : "iniciante";
 
-  useEffect(() => {
-    // if (mineCount === 0) onGameOver();
-  }, [grid, gameStarted, onGameOver]);
-
   return (
     <div className="board" onContextMenu={(e) => e.preventDefault()}>
       <div className="info">
@@ -64,13 +81,20 @@ function GamePanel(props) {
             isMined={cell.isMined}
             checkNeighborsHaveMines={checkNeighborsHaveMines}
             onGameOver={onGameOver}
-            onMineCount={onMineCount}
+            onMineCount={handleMineCount}
             gameStarted={gameStarted}
           />
         ))}
       </div>
     </div>
   );
+}
+
+class BoardCell {
+  constructor(mined) {
+    this.isMined = mined;
+    this.isFlagged = false;
+  }
 }
 
 export default GamePanel;
