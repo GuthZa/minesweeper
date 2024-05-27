@@ -5,18 +5,15 @@ function Cell(props) {
   const {
     isMined,
     grid,
-    checkNeighborsHaveMines,
+    numMines,
     onGameOver,
     onMineCount,
     gameStarted,
   } = props;
   const [isFlag, setFlag] = useState("");
   const [isRevealed, setRevealed] = useState(false);
-  const [numMines, setNumMines] = useState(0);
 
   const handleSetCellRevealed = () => (!isRevealed ? setRevealed(true) : "");
-
-  const handleSetNumberOfMines = (value) => setNumMines(value);
 
   //Clears the board to a new state
   useEffect(() => {
@@ -44,7 +41,6 @@ function Cell(props) {
 
     if (e.type === "click" && isFlag === "") {
       handleSetCellRevealed();
-      handleSetNumberOfMines(checkNeighborsHaveMines());
       if (isMined && !isRevealed) onGameOver();
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlag();
@@ -55,7 +51,7 @@ function Cell(props) {
 
   if (isFlag === "flagged") cellText = "🚩";
   else if (isFlag === "possible") cellText = "?";
-  else if (isRevealed) {
+  else if (!isRevealed) {
     if (numMines !== 0) cellText = numMines;
     if (isMined) cellText = "💣";
   }

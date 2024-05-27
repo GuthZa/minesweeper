@@ -17,11 +17,26 @@ function GamePanel(props) {
     const newGrid = [];
     let maxMinas = numMinesOnLevel(level);
     let [width, height] = boardSize(level);
+    console.log(width);
 
-    for (let i = 0, currentMinas = 0; i < height * width; i++, currentMinas++)
+    for (let i = 0, currentMinas = 0; i < width * height; i++, currentMinas++)
       newGrid.push(new BoardCell(currentMinas <= maxMinas));
 
-    setGrid(shuffleArray(newGrid));
+    let shuffledArray = shuffleArray(newGrid);
+    let x = 0,
+      y = 0;
+
+    shuffledArray.forEach((cell) => {
+      cell.x = x++;
+      cell.y = y;
+      if (!(x % width)) {
+        y++;
+        x = 0;
+      }
+      cell.numMines = checkNeighborsHaveMines(x, y);
+    });
+
+    setGrid(shuffledArray);
   };
 
   useEffect(() => {
@@ -40,22 +55,17 @@ function GamePanel(props) {
       isToRemoveMine ? previousValue - 1 : previousValue + 1
     );
 
-  const checkNeighborsHaveMines = (cell) => {
-    // console.log("to implent");
-    // let width = selectedLevel === "3" ? 30 : selectedLevel === "2" ? 16 : 9;
-    // let arrayPosition = y * width + x;
-    // let value = grid.filter((ele) => isAdjacentAndMined(cell, ele)).length;
-    console.log(cell);
-    // return value;
+  const checkNeighborsHaveMines = (x, y) => {
+    return grid.filter((ele) => isAdjacentAndMined(x, y, ele)).length;
   };
 
-  const isAdjacentAndMined = (cell, ele) => {
-    let value =
-      Math.abs(cell.x - ele.x) <= 1 &&
-      Math.abs(cell.y - ele.y) <= 1 &&
-      !(cell.x === ele.x && cell.y === ele.y) &&
-      ele.isMined;
-    return value;
+  const isAdjacentAndMined = (x, y, ele) => {
+    return (
+      Math.abs(x - ele.x) <= 1 &&
+      Math.abs(y - ele.y) <= 1 &&
+      !(x === ele.x && y === ele.y) &&
+      ele.isMined
+    );
   };
 
   return (
@@ -74,7 +84,7 @@ function GamePanel(props) {
             key={index}
             grid={grid}
             isMined={cell.isMined}
-            checkNeighborsHaveMines={checkNeighborsHaveMines}
+            mineCount={cell.numMines}
             onGameOver={onGameOver}
             onMineCount={handleMineCount}
             gameStarted={gameStarted}
@@ -86,9 +96,15 @@ function GamePanel(props) {
 }
 
 class BoardCell {
+  /**
+   * @param {Boolean} mined
+   */
   constructor(mined) {
+    this.x = 0;
+    this.y = 0;
     this.isMined = mined;
     this.isFlagged = false;
+    this.mineDisplay = 0;
   }
 }
 

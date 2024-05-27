@@ -8,7 +8,6 @@ import {
   GameOverModal,
 } from "./components";
 
-let timer = 0;
 let timerId;
 
 function App() {
@@ -33,8 +32,7 @@ function App() {
 
   const handleLevelChange = (ele) => setSelectedLevel(ele.currentTarget.value);
 
-  const handleTimer = (t, id) => {
-    timer = t;
+  const handleTimer = (id) => {
     timerId = id;
   };
 
