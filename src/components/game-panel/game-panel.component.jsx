@@ -1,5 +1,5 @@
 import "./game-panel.css";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Timer, Cell } from "../index";
 import shuffleArray from "../../helpers/mines";
 import boardSize from "../../helpers/boardsize";
@@ -65,6 +65,10 @@ function GamePanel(props) {
       : selectedLevel === "3"
       ? "avancado"
       : "iniciante";
+
+  useEffect(() => {
+    // if (mineCount === 0) onGameOver();
+  }, [grid, gameStarted, onGameOver]);
 
   return (
     <div className="board" onContextMenu={(e) => e.preventDefault()}>

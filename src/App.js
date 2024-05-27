@@ -4,17 +4,38 @@ import { GamePanel, ControlPanel, Header, Footer } from "./components";
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
-  //Selected Level
-  //1 - Beginner - 9x9 10mines
-  //2 - Intermediate - 16x16 40mines
-  //3 - Advanced - 30x16 99mines
   const [selectedLevel, setSelectedLevel] = useState("0");
+  const [grid, setGrid] = useState([]);
+  const [mineCount, setMineCount] = useState(0);
 
   const handleGameStart = () => setGameStarted(!gameStarted);
 
   const handleGameOver = () => setGameStarted(false);
 
-  const handleLevelChange = (ele) => setSelectedLevel(ele.currentTarget.value);
+  const handleLevelChange = (ele) => {
+    let value = ele.currentTarget.value;
+    setSelectedLevel(value);
+    handleGrid(value);
+    setMineCount(numMinesOnLevel(selectedLevel));
+  };
+
+  const handleMineCount = (isToRemoveMine) => {
+    setMineCount((previousValue) =>
+      isToRemoveMine ? previousValue - 1 : previousValue + 1
+    );
+  };
+
+  const handleGrid = (level) => {
+    const newGrid = [];
+    let maxMinas = numMinesOnLevel(level);
+    let [width, height] = boardSize(level);
+
+    for (let i = 0, currentMinas = 0; i < height * width; i++, currentMinas++)
+      newGrid.push(new BoardCell(currentMinas <= maxMinas));
+    let shuffledArray = shuffleArray(newGrid);
+
+    setGrid(shuffledArray);
+  };
 
   return (
     <div id="container">
