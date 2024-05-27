@@ -1,17 +1,41 @@
 import "./game-panel.css";
+import { useEffect, useState } from "react";
 import { Timer, Cell } from "../index";
+import shuffleArray from "../../helpers/mines";
+import boardSize from "../../helpers/boardsize";
+import numMinesOnLevel from "../../helpers/shuffle";
 
 let time = 0;
 
 function GamePanel(props) {
-  const {
-    selectedLevel,
-    gameStarted,
-    onGameOver,
-    grid,
-    mineCount,
-    onMineCount,
-  } = props;
+  const { selectedLevel, gameStarted, onGameOver } = props;
+
+  const [mineCount, setMineCount] = useState(0);
+  const [grid, setGrid] = useState(new Array());
+
+  const handleMineCount = (isToRemoveMine) =>
+    setMineCount((previousValue) =>
+      isToRemoveMine ? previousValue - 1 : previousValue + 1
+    );
+
+  const handleGrid = () => {
+    const newGrid = [];
+    let maxMinas = numMinesOnLevel(selectedLevel);
+    let [width, height] = boardSize(selectedLevel);
+
+    for (let i = 0, currentMinas = 0; i < height * width; i++, currentMinas++) {
+      let isMine = currentMinas <= maxMinas;
+      newGrid.push(new BoardCell(currentMinas <= maxMinas));
+    }
+
+    console.log(newGrid);
+    setGrid(shuffleArray(newGrid));
+  };
+
+  if (gameStarted) {
+    handleGrid();
+    setMineCount(numMinesOnLevel(selectedLevel));
+  }
 
   const handleTimer = (t) => {
     time = t;
@@ -60,13 +84,20 @@ function GamePanel(props) {
             isMined={cell.isMined}
             checkNeighborsHaveMines={checkNeighborsHaveMines}
             onGameOver={onGameOver}
-            onMineCount={onMineCount}
+            onMineCount={handleMineCount}
             gameStarted={gameStarted}
           />
         ))}
       </div>
     </div>
   );
+}
+
+class BoardCell {
+  constructor(mined) {
+    this.isMined = mined;
+    this.isFlagged = false;
+  }
 }
 
 export default GamePanel;
