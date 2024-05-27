@@ -1,8 +1,6 @@
 import "./cell.css";
 import React, { useEffect, useState } from "react";
 
-let cellText = "";
-
 function Cell(props) {
   const {
     isMined,
@@ -26,14 +24,6 @@ function Cell(props) {
     setRevealed(false);
   }, [grid]);
 
-  // const handleGameStarted = () => {
-  //   if (gameStarted) {
-  //     setFlag("");
-  //     setRevealed(false);
-
-  //   }
-  // };
-
   const handleSetFlag = () => {
     if (isFlag === "") {
       setFlag("flagged");
@@ -54,11 +44,11 @@ function Cell(props) {
 
     if (e.type === "click" && isFlag === "") {
       handleSetCellRevealed();
+      handleSetNumberOfMines(checkNeighborsHaveMines());
       if (isMined && !isRevealed) {
         console.log("isMine");
         onGameOver();
       }
-      // handleSetNumberOfMines(checkNeighborsHaveMines(x, y));
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlag();
     }
@@ -67,15 +57,18 @@ function Cell(props) {
   let cellText = "";
 
   if (isFlag === "flagged") cellText = "🚩";
-  if (isFlag === "possible") cellText = "?";
-  if (numMines !== 0) cellText = numMines;
-  if (isMined && isRevealed) cellText = "💣";
+  else if (isFlag === "possible") cellText = "?";
+  else if (isRevealed) {
+    if (numMines !== 0) cellText = numMines;
+    if (isMined) cellText = "💣";
+  }
 
   const hiddenClass = isRevealed ? "" : "hidden";
+  const mineClass = isMined ? "mined" : "";
 
   return (
     <div
-      className={`cell unselectable ${hiddenClass}`}
+      className={`cell unselectable ${hiddenClass} ${mineClass}`}
       onClick={handleOnClick}
       onContextMenu={handleOnClick}>
       {cellText}

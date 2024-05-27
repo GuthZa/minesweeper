@@ -18,20 +18,22 @@ function GamePanel(props) {
     time = t;
   };
 
-  const checkNeighborsHaveMines = (x, y) => {
-    console.log("to implent");
+  const checkNeighborsHaveMines = (cell) => {
+    // console.log("to implent");
     // let width = selectedLevel === "3" ? 30 : selectedLevel === "2" ? 16 : 9;
     // let arrayPosition = y * width + x;
-    // grid.filter((ele) => isAdjacentAndMined(x, y, ele));
+    // let value = grid.filter((ele) => isAdjacentAndMined(cell, ele)).length;
+    console.log(cell);
+    // return value;
   };
 
-  const isAdjacentAndMined = (x, y, ele) => {
-    return (
-      Math.abs(x - ele.x) <= 1 &&
-      Math.abs(y - ele.y) <= 1 &&
-      !(x === ele.x && y === ele.y) &&
-      ele.isMined
-    );
+  const isAdjacentAndMined = (cell, ele) => {
+    let value =
+      Math.abs(cell.x - ele.x) <= 1 &&
+      Math.abs(cell.y - ele.y) <= 1 &&
+      !(cell.x === ele.x && cell.y === ele.y) &&
+      ele.isMined;
+    return value;
   };
 
   let nivel =

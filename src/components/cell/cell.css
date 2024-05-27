@@ -14,6 +14,10 @@
   align-items: center;
 }
 
+.cell.mined {
+  background-color: rgb(196, 45, 63);
+}
+
 .cell.hidden {
   background-color: rgb(91, 66, 69);
 }

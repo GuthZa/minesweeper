@@ -1,14 +1,9 @@
 import "./assets/styles/App.css";
 import shuffleArray from "./helpers/shuffle";
+import boardSize from "./helpers/boardsize";
+import numMinesOnLevel from "./helpers/mines";
 import { React, useState } from "react";
 import { GamePanel, ControlPanel, Header, Footer } from "./components";
-import {
-  NUM_MINAS_AVANCADO,
-  NUM_MINAS_BEGINNER,
-  NUM_MINAS_INTERMEDIO,
-} from "./constants";
-
-let height, width;
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
@@ -19,7 +14,7 @@ function App() {
   const handleGameStart = () => {
     setGameStarted(!gameStarted);
     handleGrid(selectedLevel);
-    setMineCount(setNumMinas(selectedLevel));
+    setMineCount(numMinesOnLevel(selectedLevel));
   };
 
   const handleGameOver = () => {
@@ -30,39 +25,25 @@ function App() {
     let value = ele.currentTarget.value;
     setSelectedLevel(value);
     handleGrid(value);
-    setMineCount(setNumMinas(selectedLevel));
+    setMineCount(numMinesOnLevel(selectedLevel));
   };
 
   const handleMineCount = (isToRemoveMine) => {
-    if (isToRemoveMine && mineCount > 0) {
-      setMineCount((previousValue) => previousValue - 1);
-    } else {
-      setMineCount((previousValue) => previousValue + 1);
-    }
+    setMineCount((previousValue) =>
+      isToRemoveMine ? previousValue - 1 : previousValue + 1
+    );
   };
 
   const handleGrid = (level) => {
-    height = level === "3" ? 30 : level === "2" ? 16 : 9;
-    width = level === "3" || level === "2" ? 16 : 9;
     const newGrid = [];
-    let maxMinas = setNumMinas(level);
+    let maxMinas = numMinesOnLevel(level);
+    let [width, height] = boardSize(level);
 
-    let isMine;
-    for (let i = 0, currentMinas = 0; i < height * width; i++, currentMinas++) {
-      isMine = currentMinas <= maxMinas ? true : false;
-      newGrid.push(new BoardCell(isMine, false));
-    }
+    for (let i = 0, currentMinas = 0; i < height * width; i++, currentMinas++)
+      newGrid.push(new BoardCell(currentMinas <= maxMinas));
     let shuffledArray = shuffleArray(newGrid);
 
     setGrid(shuffledArray);
-  };
-
-  const setNumMinas = () => {
-    return selectedLevel === "3"
-      ? NUM_MINAS_AVANCADO
-      : selectedLevel === "2"
-      ? NUM_MINAS_INTERMEDIO
-      : NUM_MINAS_BEGINNER;
   };
 
   return (
@@ -88,9 +69,9 @@ function App() {
 }
 
 class BoardCell {
-  constructor(mined, flagged) {
+  constructor(mined) {
     this.isMined = mined;
-    this.isFlagged = flagged;
+    this.isFlagged = false;
   }
 }
 
