@@ -12,6 +12,7 @@ function GamePanel(props) {
 
   const [mineCount, setMineCount] = useState(0);
   const [grid, setGrid] = useState([]);
+  const [revealedCells, setRevealedCells] = useState([]);
 
   const handleMineCount = (isToRemoveMine) =>
     setMineCount((previousValue) =>
@@ -30,7 +31,7 @@ function GamePanel(props) {
     let shuffledArray = shuffleArray(newGrid);
     calculateMines(shuffledArray, width, height);
 
-    calculatePosition(shuffledArray, width);
+    // calculatePosition(shuffledArray, width);
 
     setGrid(shuffledArray);
   };
@@ -45,6 +46,14 @@ function GamePanel(props) {
         ? "avancado"
         : "iniciante";
   }, [selectedLevel, gameStarted]);
+
+  const handleRevealCells = (cell) => {
+    let [width, height] = boardSize(selectedLevel);
+
+    if (!grid[cell - 1].isMined)
+      setRevealedCells((currentCells) => [...currentCells, cell - 1]);
+    setRevealedCells((currentCells) => [...currentCells, cell]);
+  };
 
   const handleRevealNeigbors = (x, y) => {
     console.log("to implent");
@@ -73,14 +82,15 @@ function GamePanel(props) {
         {grid.map((cell, index) => (
           <Cell
             key={index}
+            id={index}
             grid={grid}
             isMined={cell.isMined}
             numMines={cell.numMines}
-            x={cell.x}
-            y={cell.y}
             onGameOver={onGameOver}
             onMineCount={handleMineCount}
             gameStarted={gameStarted}
+            onReveal={handleRevealCells}
+            revealedCells={revealedCells}
           />
         ))}
       </div>
@@ -143,8 +153,6 @@ class BoardCell {
    * @param {Boolean} mined
    */
   constructor(mined) {
-    this.x = 0;
-    this.y = 0;
     this.isMined = mined;
     this.isFlagged = false;
     this.numMines = 0;
