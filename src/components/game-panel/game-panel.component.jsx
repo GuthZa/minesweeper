@@ -1,5 +1,5 @@
 import "./game-panel.css";
-import { Timer, Cell } from "../index";
+import { Timer, Cell, GameOverModal } from "../index";
 import { useEffect, useState } from "react";
 import shuffleArray from "../../helpers/shuffle";
 import boardSize from "../../helpers/boardsize";
@@ -59,10 +59,16 @@ function GamePanel(props) {
     setRevealedCells((currentCells) => [...currentCells, cell]);
   };
 
-  const handleGameOver = (isMines) => {
+  const handleGameOver = (isMined) => {
     let [width, height] = boardSize(selectedLevel);
-    if (isMines || revealedCells.length + 1 + mineCount === width * height)
+    if (isMined) {
+      grid.forEach((cell, index) => {
+        if (cell.isMined)
+          setRevealedCells((currentCells) => [...currentCells, index]);
+      });
       onGameOver();
+    }
+    if (revealedCells.length + 1 + mineCount === width * height) onGameOver();
   };
 
   return (
