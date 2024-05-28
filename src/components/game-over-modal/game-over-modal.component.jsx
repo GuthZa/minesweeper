@@ -19,15 +19,14 @@ function GameOverModal({ isOpen, points, handleClose }) {
           <span
             className="closeModal"
             data-modalid="gameOver"
-            onClick={handleClose}
-          >
+            onClick={handleClose}>
             &times;
           </span>
           <div>Jogo Terminado</div>
         </header>
-        <div className="info" id="messageGameOver">
+        {/* {<div className="info" id="messageGameOver">
           <p>Pontuação: {points}</p>
-        </div>
+        </div>} */}
         {/* <div className="info" id="nickname">
           Nick Name:
           <input

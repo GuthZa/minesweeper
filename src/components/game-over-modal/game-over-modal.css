@@ -14,15 +14,15 @@ dialog {
   text-align: center;
   outline: none;
   box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.3);
-  background-color: var(--top10Color);
-  border: 3px solid var(--top10Color);
-  color: white;
+  background-color: #f5f5dc;
+  border: 3px solid #f5f5dc;
+  color: black;
 }
 dialog::backdrop {
   background-color: rgba(18, 18, 18, 0.5);
 }
 .closeModal:hover {
-  background-color: grey;
+  background-color: darkgray;
 }
 [id^="modal-"] .info div {
   display: grid;
@@ -55,7 +55,7 @@ dialog::backdrop {
 }
 [id^="modal-"] header {
   font-weight: bold;
-  color: white;
+  color: black;
   padding-bottom: 2px;
 }
 
@@ -79,8 +79,8 @@ dialog::backdrop {
   margin-bottom: 5px;
 }
 #modal-gameOver {
-  background-color: var(--gameOverColor);
-  border: 3px solid var(--gameOverColor);
+  background-color: #f5f5dc;
+  border: 3px solid #f5f5dc;
 }
 #modal-gameOver .info {
   padding: 10px;
