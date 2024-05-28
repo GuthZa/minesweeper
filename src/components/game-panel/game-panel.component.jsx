@@ -22,60 +22,8 @@ function GamePanel(props) {
       newGrid.push(new BoardCell(currentMinas <= maxMinas));
 
     let shuffledArray = shuffleArray(newGrid);
-    let x = 0,
-      y = 0;
 
-    let count = 0;
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        if (shuffledArray[x + y * width].isMined) continue;
-        //NE
-        if (x > 0 && y > 0 && shuffledArray[x - 1 + (y - 1) * width].isMined)
-          count++;
-        //N
-        if (y > 0 && shuffledArray[x + (y - 1) * width].isMined) count++;
-        //NO
-        if (
-          x < width - 1 &&
-          y > 0 &&
-          shuffledArray[x + 1 + (y - 1) * width].isMined
-        )
-          count++;
-        //O
-        if (x < width - 1 && shuffledArray[x + 1 + y * width].isMined) count++;
-        //SO
-        if (
-          x < width - 1 &&
-          y < height - 1 &&
-          shuffledArray[x + 1 + (y + 1) * width].isMined
-        )
-          count++;
-        //S
-        if (y < height - 1 && shuffledArray[x + (y + 1) * width].isMined)
-          count++;
-        //SE
-        if (
-          y < height - 1 &&
-          x > 0 &&
-          shuffledArray[x - 1 + (y + 1) * width].isMined
-        )
-          count++;
-        //E
-        if (x > 0 && shuffledArray[x - 1 + y * width].isMined) count++;
-        shuffledArray[x + y * width].numMines = count;
-        count = 0;
-      }
-    }
-
-    shuffledArray.forEach((cell) => {
-      cell.x = x++;
-      cell.y = y;
-      if (!(x % width)) {
-        y++;
-        x = 0;
-      }
-      // cell.numMines = checkAdjacentCells(shuffledArray, cell);
-    });
+    calculateMines(shuffledArray, width, height);
     setGrid(shuffledArray);
   };
 
@@ -121,13 +69,48 @@ function GamePanel(props) {
   );
 }
 
+function calculateMines(shuffledArray, width, height) {
+  const directions = [
+    [-1, -1], // NE
+    [0, -1], // N
+    [1, -1], // NO
+    [1, 0], // O
+    [1, 1], // SO
+    [0, 1], // S
+    [-1, 1], // SE
+    [-1, 0], // E
+  ];
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (shuffledArray[x + y * width].isMined) continue;
+
+      let count = 0;
+      for (const [dx, dy] of directions) {
+        const newX = x + dx;
+        const newY = y + dy;
+
+        if (
+          newX >= 0 &&
+          newX < width &&
+          newY >= 0 &&
+          newY < height &&
+          shuffledArray[newX + newY * width].isMined
+        ) {
+          count++;
+        }
+      }
+
+      shuffledArray[x + y * width].numMines = count;
+    }
+  }
+}
+
 class BoardCell {
   /**
    * @param {Boolean} mined
    */
   constructor(mined) {
-    this.x = 0;
-    this.y = 0;
     this.isMined = mined;
     this.isFlagged = false;
     this.numMines = 0;
