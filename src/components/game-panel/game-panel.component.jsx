@@ -13,17 +13,25 @@ function GamePanel(props) {
   const [mineCount, setMineCount] = useState(0);
   const [grid, setGrid] = useState([]);
 
+  const handleMineCount = (isToRemoveMine) =>
+    setMineCount((previousValue) =>
+      isToRemoveMine ? previousValue - 1 : previousValue + 1
+    );
+
   const handleGrid = (level) => {
     const newGrid = [];
     let maxMinas = numMinesOnLevel(level);
     let [width, height] = boardSize(level);
 
+    //Creates the board
     for (let i = 0, currentMinas = 0; i < width * height; i++, currentMinas++)
       newGrid.push(new BoardCell(currentMinas <= maxMinas));
 
     let shuffledArray = shuffleArray(newGrid);
-
     calculateMines(shuffledArray, width, height);
+
+    calculatePosition(shuffledArray, width);
+
     setGrid(shuffledArray);
   };
 
@@ -38,10 +46,19 @@ function GamePanel(props) {
         : "iniciante";
   }, [selectedLevel, gameStarted]);
 
-  const handleMineCount = (isToRemoveMine) =>
-    setMineCount((previousValue) =>
-      isToRemoveMine ? previousValue - 1 : previousValue + 1
-    );
+  const handleRevealNeigbors = (x, y) => {
+    console.log("to implent");
+    //   let [width, height] = boardSize(selectedLevel);
+    //   while (true) {
+    //     if (grid[x + y * width].isMined) return;
+    //   }
+    //   for (let newY = y; newY < height; newY++) {
+    //     for (let newX = x; newX < width; newX++) {
+    //       if (!grid[x + y * width].isMined) return;
+    //     }
+    //   }
+  };
+
   return (
     <div className="board" onContextMenu={(e) => e.preventDefault()}>
       <div className="info">
@@ -59,8 +76,11 @@ function GamePanel(props) {
             grid={grid}
             isMined={cell.isMined}
             numMines={cell.numMines}
+            x={cell.x}
+            y={cell.y}
             onGameOver={onGameOver}
             onMineCount={handleMineCount}
+            onReveal={handleRevealNeigbors}
             gameStarted={gameStarted}
           />
         ))}
@@ -69,7 +89,7 @@ function GamePanel(props) {
   );
 }
 
-function calculateMines(shuffledArray, width, height) {
+function calculateMines(array, width, height) {
   const directions = [
     [-1, -1], // NE
     [0, -1], // N
@@ -83,7 +103,7 @@ function calculateMines(shuffledArray, width, height) {
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      if (shuffledArray[x + y * width].isMined) continue;
+      if (array[x + y * width].isMined) continue;
 
       let count = 0;
       for (const [dx, dy] of directions) {
@@ -95,15 +115,28 @@ function calculateMines(shuffledArray, width, height) {
           newX < width &&
           newY >= 0 &&
           newY < height &&
-          shuffledArray[newX + newY * width].isMined
+          array[newX + newY * width].isMined
         ) {
           count++;
         }
       }
 
-      shuffledArray[x + y * width].numMines = count;
+      array[x + y * width].numMines = count;
     }
   }
+}
+
+function calculatePosition(array, width) {
+  let x = 0,
+    y = 0;
+  array.forEach((cell) => {
+    cell.x = x++;
+    cell.y = y;
+    if (!(x % width)) {
+      y++;
+      x = 0;
+    }
+  });
 }
 
 class BoardCell {
@@ -111,6 +144,8 @@ class BoardCell {
    * @param {Boolean} mined
    */
   constructor(mined) {
+    this.x = 0;
+    this.y = 0;
     this.isMined = mined;
     this.isFlagged = false;
     this.numMines = 0;
