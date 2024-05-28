@@ -10,7 +10,6 @@ function Cell(props) {
     numMines,
     onGameOver,
     onMineCount,
-    onReveal,
     gameStarted,
   } = props;
   const [isFlag, setFlag] = useState("");
@@ -44,7 +43,6 @@ function Cell(props) {
 
     if (e.type === "click" && isFlag === "") {
       handleSetCellRevealed();
-      onReveal(x, y);
       if (isMined && !isRevealed) onGameOver();
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlag();

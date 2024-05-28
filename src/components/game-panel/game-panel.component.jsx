@@ -80,7 +80,6 @@ function GamePanel(props) {
             y={cell.y}
             onGameOver={onGameOver}
             onMineCount={handleMineCount}
-            onReveal={handleRevealNeigbors}
             gameStarted={gameStarted}
           />
         ))}
