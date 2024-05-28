@@ -54,7 +54,7 @@ function Cell(props) {
 
     if (e.type === "click" && isFlag === "") {
       handleSetCellRevealed();
-      onGameOver();
+      onGameOver(isMined);
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlag();
     }
@@ -64,7 +64,7 @@ function Cell(props) {
 
   if (isFlag === "flagged") cellText = "🚩";
   else if (isFlag === "possible") cellText = "?";
-  else if (!isRevealed) {
+  else if (isRevealed) {
     if (numMines !== 0) cellText = numMines;
     if (isMined) cellText = "💣";
   }

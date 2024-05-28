@@ -59,9 +59,10 @@ function GamePanel(props) {
     setRevealedCells((currentCells) => [...currentCells, cell]);
   };
 
-  const handleGameOver = () => {
+  const handleGameOver = (isMines) => {
     let [width, height] = boardSize(selectedLevel);
-    if (revealedCells.length + 1 + mineCount === width * height) onGameOver();
+    if (isMines || revealedCells.length + 1 + mineCount === width * height)
+      onGameOver();
   };
 
   return (
