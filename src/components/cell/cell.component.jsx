@@ -2,14 +2,8 @@ import "./cell.css";
 import React, { useEffect, useState } from "react";
 
 function Cell(props) {
-  const {
-    isMined,
-    grid,
-    numMines,
-    onGameOver,
-    onMineCount,
-    gameStarted,
-  } = props;
+  const { isMined, grid, numMines, onGameOver, onMineCount, gameStarted } =
+    props;
   const [isFlag, setFlag] = useState("");
   const [isRevealed, setRevealed] = useState(false);
 
@@ -51,7 +45,7 @@ function Cell(props) {
 
   if (isFlag === "flagged") cellText = "🚩";
   else if (isFlag === "possible") cellText = "?";
-  else if (!isRevealed) {
+  else if (isRevealed) {
     if (numMines !== 0) cellText = numMines;
     if (isMined) cellText = "💣";
   }

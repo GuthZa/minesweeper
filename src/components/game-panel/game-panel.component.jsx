@@ -17,7 +17,6 @@ function GamePanel(props) {
     const newGrid = [];
     let maxMinas = numMinesOnLevel(level);
     let [width, height] = boardSize(level);
-    console.log(width);
 
     for (let i = 0, currentMinas = 0; i < width * height; i++, currentMinas++)
       newGrid.push(new BoardCell(currentMinas <= maxMinas));
@@ -26,6 +25,48 @@ function GamePanel(props) {
     let x = 0,
       y = 0;
 
+    let count = 0;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (shuffledArray[x + y * width].isMined) continue;
+        //NE
+        if (x > 0 && y > 0 && shuffledArray[x - 1 + (y - 1) * width].isMined)
+          count++;
+        //N
+        if (y > 0 && shuffledArray[x + (y - 1) * width].isMined) count++;
+        //NO
+        if (
+          x < width - 1 &&
+          y > 0 &&
+          shuffledArray[x + 1 + (y - 1) * width].isMined
+        )
+          count++;
+        //O
+        if (x < width - 1 && shuffledArray[x + 1 + y * width].isMined) count++;
+        //SO
+        if (
+          x < width - 1 &&
+          y < height - 1 &&
+          shuffledArray[x + 1 + (y + 1) * width].isMined
+        )
+          count++;
+        //S
+        if (y < height - 1 && shuffledArray[x + (y + 1) * width].isMined)
+          count++;
+        //SE
+        if (
+          y < height - 1 &&
+          x > 0 &&
+          shuffledArray[x - 1 + (y + 1) * width].isMined
+        )
+          count++;
+        //E
+        if (x > 0 && shuffledArray[x - 1 + y * width].isMined) count++;
+        shuffledArray[x + y * width].numMines = count;
+        count = 0;
+      }
+    }
+
     shuffledArray.forEach((cell) => {
       cell.x = x++;
       cell.y = y;
@@ -33,9 +74,8 @@ function GamePanel(props) {
         y++;
         x = 0;
       }
-      cell.numMines = checkNeighborsHaveMines(x, y);
+      // cell.numMines = checkAdjacentCells(shuffledArray, cell);
     });
-
     setGrid(shuffledArray);
   };
 
@@ -54,20 +94,6 @@ function GamePanel(props) {
     setMineCount((previousValue) =>
       isToRemoveMine ? previousValue - 1 : previousValue + 1
     );
-
-  const checkNeighborsHaveMines = (x, y) => {
-    return grid.filter((ele) => isAdjacentAndMined(x, y, ele)).length;
-  };
-
-  const isAdjacentAndMined = (x, y, ele) => {
-    return (
-      Math.abs(x - ele.x) <= 1 &&
-      Math.abs(y - ele.y) <= 1 &&
-      !(x === ele.x && y === ele.y) &&
-      ele.isMined
-    );
-  };
-
   return (
     <div className="board" onContextMenu={(e) => e.preventDefault()}>
       <div className="info">
@@ -84,7 +110,7 @@ function GamePanel(props) {
             key={index}
             grid={grid}
             isMined={cell.isMined}
-            mineCount={cell.numMines}
+            numMines={cell.numMines}
             onGameOver={onGameOver}
             onMineCount={handleMineCount}
             gameStarted={gameStarted}
@@ -104,7 +130,7 @@ class BoardCell {
     this.y = 0;
     this.isMined = mined;
     this.isFlagged = false;
-    this.mineDisplay = 0;
+    this.numMines = 0;
   }
 }
 
