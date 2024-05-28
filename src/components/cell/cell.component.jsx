@@ -31,7 +31,6 @@ function Cell(props) {
 
   useEffect(() => {
     const isToReveal = revealedCells.filter((cell) => cell === id).length > 0;
-    console.log(revealedCells);
     setRevealed(isToReveal);
   }, [revealedCells, id]);
 
@@ -55,7 +54,7 @@ function Cell(props) {
 
     if (e.type === "click" && isFlag === "") {
       handleSetCellRevealed();
-      if (isMined) onGameOver();
+      onGameOver();
     } else if (e.type === "contextmenu" && !isRevealed) {
       handleSetFlag();
     }

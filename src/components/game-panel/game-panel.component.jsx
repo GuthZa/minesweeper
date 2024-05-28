@@ -26,7 +26,11 @@ function GamePanel(props) {
 
     //Creates the board
     for (let i = 0, currentMinas = 0; i < width * height; i++, currentMinas++)
-      newGrid.push(new BoardCell(currentMinas <= maxMinas));
+      newGrid.push({
+        isMined: currentMinas < maxMinas,
+        isFlagged: false,
+        numMines: 0,
+      });
 
     let shuffledArray = shuffleArray(newGrid);
     calculateMines(shuffledArray, width, height);
@@ -50,22 +54,14 @@ function GamePanel(props) {
   const handleRevealCells = (cell) => {
     let [width, height] = boardSize(selectedLevel);
 
-    if (!grid[cell - 1].isMined)
-      setRevealedCells((currentCells) => [...currentCells, cell - 1]);
+    // if (!grid[cell - 1].isMined)
+    //   setRevealedCells((currentCells) => [...currentCells, cell - 1]);
     setRevealedCells((currentCells) => [...currentCells, cell]);
   };
 
-  const handleRevealNeigbors = (x, y) => {
-    console.log("to implent");
-    //   let [width, height] = boardSize(selectedLevel);
-    //   while (true) {
-    //     if (grid[x + y * width].isMined) return;
-    //   }
-    //   for (let newY = y; newY < height; newY++) {
-    //     for (let newX = x; newX < width; newX++) {
-    //       if (!grid[x + y * width].isMined) return;
-    //     }
-    //   }
+  const handleGameOver = () => {
+    let [width, height] = boardSize(selectedLevel);
+    if (revealedCells.length + 1 + mineCount === width * height) onGameOver();
   };
 
   return (
@@ -86,7 +82,7 @@ function GamePanel(props) {
             grid={grid}
             isMined={cell.isMined}
             numMines={cell.numMines}
-            onGameOver={onGameOver}
+            onGameOver={handleGameOver}
             onMineCount={handleMineCount}
             gameStarted={gameStarted}
             onReveal={handleRevealCells}
@@ -146,17 +142,6 @@ function calculatePosition(array, width) {
       x = 0;
     }
   });
-}
-
-class BoardCell {
-  /**
-   * @param {Boolean} mined
-   */
-  constructor(mined) {
-    this.isMined = mined;
-    this.isFlagged = false;
-    this.numMines = 0;
-  }
 }
 
 export default GamePanel;
