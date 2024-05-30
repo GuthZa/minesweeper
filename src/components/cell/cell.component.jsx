@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 
 function Cell(props) {
   const {
+    x,
+    y,
     id,
     isMined,
     grid,
@@ -19,7 +21,7 @@ function Cell(props) {
   const handleSetCellRevealed = () => {
     if (gameStarted && !isRevealed) {
       setRevealed(true);
-      onReveal(id);
+      onReveal(id, x, y);
     }
   };
 

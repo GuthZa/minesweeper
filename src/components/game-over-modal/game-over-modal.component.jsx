@@ -22,7 +22,7 @@ function GameOverModal({ isOpen, points, handleClose }) {
             onClick={handleClose}>
             &times;
           </span>
-          <div>Jogo Terminado</div>
+          <div>Game Ended</div>
         </header>
         {/* {<div className="info" id="messageGameOver">
           <p>Pontuação: {points}</p>
