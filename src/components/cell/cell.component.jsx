@@ -58,7 +58,7 @@ function Cell(props) {
 
   if (isFlag === "flagged") cellText = "🚩";
   else if (isFlag === "possible") cellText = "?";
-  else if (!isRevealed) {
+  else if (isRevealed) {
     if (numMines !== 0) cellText = numMines;
     if (isMined) cellText = "💣";
   }
