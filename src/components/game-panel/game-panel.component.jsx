@@ -6,6 +6,7 @@ import boardSize from "../../helpers/boardsize";
 import numMinesOnLevel from "../../helpers/mines";
 
 let nivel = "";
+let maxMines = 0;
 
 function GamePanel(props) {
   const { selectedLevel, gameStarted, onGameOver, onTimer } = props;
@@ -21,12 +22,12 @@ function GamePanel(props) {
 
   const handleGrid = (level) => {
     const newGrid = [];
-    let maxMinas = numMinesOnLevel(level);
+    maxMines = numMinesOnLevel(level);
     let [width, height] = boardSize(level);
 
     //Creates the board
     for (let i = 0, currentMinas = 0; i < width * height; i++, currentMinas++)
-      newGrid.push(new BoardCell(currentMinas < maxMinas));
+      newGrid.push(new BoardCell(currentMinas < maxMines));
 
     let shuffledArray = shuffleArray(newGrid);
 
@@ -52,9 +53,7 @@ function GamePanel(props) {
     if (cell.isMined) return;
 
     let [width, height] = boardSize(selectedLevel);
-    let cellsToReveal = [];
-
-    cellsToReveal.push(cell);
+    let cellsToReveal = [cell];
 
     for (let i = 0; i < cellsToReveal.length; i++) {
       checkNeighbors(cellsToReveal, cellsToReveal[i], width, height);
@@ -103,7 +102,7 @@ function GamePanel(props) {
       });
       onGameOver();
     }
-    if (revealedCells.length + mineCount === width * height) onGameOver();
+    if (revealedCells.length + maxMines === width * height) onGameOver();
   };
 
   useEffect(() => {
