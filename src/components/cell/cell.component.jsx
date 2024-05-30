@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 
 function Cell(props) {
   const {
-    x,
-    y,
     id,
     isMined,
     grid,
@@ -18,13 +16,6 @@ function Cell(props) {
   const [isFlag, setFlag] = useState("");
   const [isRevealed, setRevealed] = useState(false);
 
-  const handleSetCellRevealed = () => {
-    if (gameStarted && !isRevealed) {
-      setRevealed(true);
-      onReveal(id, x, y);
-    }
-  };
-
   //Clears the board to a new state
   useEffect(() => {
     setFlag("");
@@ -34,6 +25,7 @@ function Cell(props) {
   useEffect(() => {
     const isToReveal = revealedCells.filter((cell) => cell === id).length > 0;
     setRevealed(isToReveal);
+    onGameOver();
   }, [revealedCells, id]);
 
   const handleSetFlag = () => {
@@ -52,12 +44,12 @@ function Cell(props) {
     //Stops the browser from opening the default window
     e.preventDefault();
 
-    if (!gameStarted) return;
+    if (!gameStarted || isRevealed) return;
 
     if (e.type === "click" && isFlag === "") {
-      handleSetCellRevealed();
       onGameOver(isMined);
-    } else if (e.type === "contextmenu" && !isRevealed) {
+      if (!isMined) onReveal(id);
+    } else if (e.type === "contextmenu") {
       handleSetFlag();
     }
   };
@@ -66,7 +58,7 @@ function Cell(props) {
 
   if (isFlag === "flagged") cellText = "🚩";
   else if (isFlag === "possible") cellText = "?";
-  else if (isRevealed) {
+  else if (!isRevealed) {
     if (numMines !== 0) cellText = numMines;
     if (isMined) cellText = "💣";
   }

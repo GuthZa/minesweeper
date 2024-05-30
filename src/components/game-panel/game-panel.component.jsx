@@ -49,6 +49,8 @@ function GamePanel(props) {
   }, [selectedLevel, gameStarted]);
 
   const handleRevealCells = (cell) => {
+    if (cell.isMined) return;
+
     let [width, height] = boardSize(selectedLevel);
     let cellsToReveal = [];
 
@@ -84,11 +86,8 @@ function GamePanel(props) {
         newY < height &&
         !array.includes(nextCell) &&
         !grid[nextCell].isMined
-      ) {
-        console.log("(" + newX + "," + newY + ")");
-        console.log(nextCell);
+      )
         array.push(nextCell);
-      }
     }
     return array;
   };
@@ -103,7 +102,7 @@ function GamePanel(props) {
       });
       onGameOver();
     }
-    if (revealedCells.length + 1 + mineCount === width * height) onGameOver();
+    if (revealedCells.length + mineCount === width * height) onGameOver();
   };
 
   useEffect(() => {
@@ -125,8 +124,6 @@ function GamePanel(props) {
           <Cell
             key={index}
             id={index}
-            x={cell.x}
-            y={cell.y}
             grid={grid}
             isMined={cell.isMined}
             numMines={cell.numMines}
