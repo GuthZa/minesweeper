@@ -85,6 +85,7 @@ function GamePanel(props) {
         newY >= 0 &&
         newY < height &&
         !array.includes(nextCell) &&
+        !revealedCells.includes(nextCell) &&
         !grid[nextCell].isMined
       )
         array.push(nextCell);
