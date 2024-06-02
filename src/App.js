@@ -16,7 +16,6 @@ function App() {
   const [isGameOverModalOpen, setIsGameOverModalClose] = useState(false);
 
   const handleGameStart = () => {
-    setIsGameOverModalClose(false);
     setGameStarted(!gameStarted);
   };
 
@@ -54,7 +53,6 @@ function App() {
       <GameOverModal
         isOpen={isGameOverModalOpen}
         handleClose={handleGameOverModalClose}
-        points={100}
       />
       <Footer />
     </div>
