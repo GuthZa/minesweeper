@@ -5,7 +5,6 @@ function Cell(props) {
   const {
     id,
     isMined,
-    grid,
     numMines,
     onReveal,
     revealedCells,
@@ -19,8 +18,7 @@ function Cell(props) {
   //Clears the board to a new state
   useEffect(() => {
     setFlag("");
-    setRevealed(false);
-  }, [grid]);
+  }, [gameStarted]);
 
   useEffect(() => {
     const isToReveal = revealedCells.filter((cell) => cell === id).length > 0;

@@ -5,7 +5,7 @@ import shuffleArray from "../../helpers/shuffle";
 import boardSize from "../../helpers/boardsize";
 import numMinesOnLevel from "../../helpers/mines";
 
-let nivel = "";
+let level = "";
 let maxMines = 0;
 
 function GamePanel(props) {
@@ -38,25 +38,15 @@ function GamePanel(props) {
     setGrid(shuffledArray);
   };
 
-  useEffect(() => {
-    handleGrid(selectedLevel);
-    setMineCount(numMinesOnLevel(selectedLevel));
-    nivel =
-      selectedLevel === "2"
-        ? "intermedio"
-        : selectedLevel === "3"
-        ? "avancado"
-        : "iniciante";
-  }, [selectedLevel, gameStarted]);
-
   const handleRevealCells = (cell) => {
-    if (cell.isMined) return;
+    if (grid[cell].isMined) return;
 
     let [width, height] = boardSize(selectedLevel);
     let cellsToReveal = [cell];
 
     for (let i = 0; i < cellsToReveal.length; i++) {
       checkNeighbors(cellsToReveal, cellsToReveal[i], width, height);
+      //Making sure it doesn't start a infinite loop
       if (cellsToReveal.length > width * height) return;
     }
     setRevealedCells((currentCells) => [...currentCells, ...cellsToReveal]);
@@ -92,7 +82,7 @@ function GamePanel(props) {
     return array;
   };
 
-  const handleGameOver = (isMined) => {
+  const handleGameOver = (isMined = false) => {
     let [width, height] = boardSize(selectedLevel);
     if (isMined) {
       //Reveals all mined cells
@@ -107,7 +97,15 @@ function GamePanel(props) {
 
   useEffect(() => {
     setRevealedCells([]);
-  }, [gameStarted]);
+    handleGrid(selectedLevel);
+    setMineCount(numMinesOnLevel(selectedLevel));
+    level =
+      selectedLevel === "2"
+        ? "intermedio"
+        : selectedLevel === "3"
+        ? "avancado"
+        : "iniciante";
+  }, [selectedLevel, gameStarted]);
 
   return (
     <div className="board" onContextMenu={(e) => e.preventDefault()}>
@@ -119,12 +117,11 @@ function GamePanel(props) {
           {!gameStarted && 0 /* Only to make the game "prettier*/}
         </div>
       </div>
-      <div className={`gamePanel ${nivel}`}>
+      <div className={`gamePanel ${level}`}>
         {grid.map((cell, index) => (
           <Cell
             key={index}
             id={index}
-            grid={grid}
             isMined={cell.isMined}
             numMines={cell.numMines}
             onGameOver={handleGameOver}
