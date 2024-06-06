@@ -23,6 +23,7 @@ function Cell(props) {
   useEffect(() => {
     const isToReveal = revealedCells.filter((cell) => cell === id).length > 0;
     setRevealed(isToReveal);
+    if (isToReveal) setFlag("");
     onGameOver();
   }, [revealedCells, id]);
 
